@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar_component from "../components/Sidebar";
 
-export default function home() {
+export default function add_student() {
   return (
     <div style={{ 
       display: 'flex',
@@ -12,7 +12,7 @@ export default function home() {
         flex: 1,
         padding: '20px'
       }}>
-        Conteudo pagina home
+        Conteudo pagina de adcionar estudante
       </div>
     </div>
   );
