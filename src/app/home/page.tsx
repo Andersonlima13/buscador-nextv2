@@ -1,5 +1,6 @@
 import React from "react";
 import Sidebar_component from "../components/Sidebar";
+import ListAdm from "../components/ListAdm";
 
 export default function home() {
   return (
@@ -12,7 +13,7 @@ export default function home() {
         flex: 1,
         padding: '20px'
       }}>
-        Conteudo pagina home
+        <Listadm/>
       </div>
     </div>
   );
