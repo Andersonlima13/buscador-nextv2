@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar_component from "../components/Sidebar";
-import ListAdm from "../components/ListAdm";
+import {List }   from "../components/List";
+
 
 export default function home() {
   return (
@@ -13,7 +14,7 @@ export default function home() {
         flex: 1,
         padding: '20px'
       }}>
-        <Listadm/>
+        <List/>
       </div>
     </div>
   );
