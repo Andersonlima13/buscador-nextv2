@@ -169,7 +169,7 @@ export function List() {
   // Dados mockados (mesmo do exemplo anterior)
   const allUsers: User[] = [
     {id: 1, name: "João Silva", email: "joao@empresa.com", role: "Desenvolvedor", status: "Ativo"},
-    {id: 2, name: "fulano", email: "joao@empresa.com", role: "Desenvolvedor", status: "Ativo"}
+    {id: 2, name: "fulano ", email: "joao@empresa.com", role: "Desenvolvedor", status: "Ativo"}
     // ... outros usuários
   ]
 
