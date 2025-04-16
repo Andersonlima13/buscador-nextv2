@@ -1,20 +1,18 @@
 import React from "react";
-import {List }   from "../components/List";
-import SidebarComponent from "../components/Sidebar";
+import Sidebar_component from "../components/Sidebar";
 
-
-export default function home() {
+export default function add_student() {
   return (
     <div style={{ 
       display: 'flex',
       minHeight: '100vh'
     }}>
-      <SidebarComponent />
+      <Sidebar_component />
       <div style={{ 
         flex: 1,
         padding: '20px'
       }}>
-        <List/>
+        Conteudo pagina de adcionar estudante
       </div>
     </div>
   );
