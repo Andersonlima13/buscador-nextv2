@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../components/Sidebar"
+import Sidebar from "../components/Sidebar";
 
 export default function home() {
   return (
@@ -7,7 +7,6 @@ export default function home() {
       <Sidebar />
       <div className="content-wrapper p-4">
         <h1>Bem-vindo à Home</h1>
-        {/* Coloque aqui o conteúdo da página */}
       </div>
     </div>
   );
