@@ -12,8 +12,31 @@ type User = {
   name: string
   email: string
   role: string
-  status: 'Ativo' | 'Inativo' | 'Férias' | 'Afastado'
 }
+
+// Tipagem genérica
+type TableColumn<T> = {
+  key: keyof T
+  label: string
+  render?: (value: any, item: T) => React.ReactNode
+}
+
+
+// Props do componente
+interface ListProps<T> {
+  title: string
+  data: T[]
+  columns: TableColumn<T>[]
+  itemsPerPage?: number
+  searchable?: boolean
+}
+
+
+
+
+
+
+
 
 // Componentes estilizados
 const TableWrapper = styled.div`
@@ -103,30 +126,7 @@ const Td = styled.td`
   border-bottom: 1px solid #f4f4f4;
 `
 
-const StatusBadge = styled.span<{ status: User['status'] }>`
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: capitalize;
 
-  ${({ status }) => 
-    status === 'Ativo' ? `
-      background-color: #d4edda;
-      color: #155724;
-    ` : status === 'Inativo' ? `
-      background-color: #f8d7da;
-      color: #721c24;
-    ` : status === 'Férias' ? `
-      background-color: #fff3cd;
-      color: #856404;
-    ` : `
-      background-color: #d1ecf1;
-      color: #0c5460;
-    `
-  }
-`
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -165,96 +165,97 @@ const PaginationButton = styled.button<{ active?: boolean; disabled?: boolean }>
   }
 `
 
-export function List() {
-  // Dados mockados (mesmo do exemplo anterior)
-  const allUsers: User[] = [
-    {id: 1, name: "João Silva", email: "joao@empresa.com", role: "Desenvolvedor", status: "Ativo"},
-    {id: 2, name: "fulano ", email: "joao@empresa.com", role: "Desenvolvedor", status: "Ativo"}
-    // ... outros usuários
-  ]
-
-  // Estados e lógica idênticos ao exemplo anterior
-  const [filteredUsers, setFilteredUsers] = useState<User[]>(allUsers)
+export function List<T extends { id: number | string }>({
+  title,
+  data,
+  columns,
+  itemsPerPage = 10,
+  searchable = true
+}: ListProps<T>) {
+  const [filteredData, setFilteredData] = useState<T[]>(data)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
-  const usersPerPage = 10
 
   useEffect(() => {
-    const filtered = allUsers.filter(user =>
-      Object.values(user).some(
-        val => val.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    )
-    setFilteredUsers(filtered)
-    setCurrentPage(1)
-  }, [searchTerm])
+    setFilteredData(data)
+  }, [data])
 
-  const indexOfLastUser = currentPage * usersPerPage
-  const indexOfFirstUser = indexOfLastUser - usersPerPage
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser)
-  const totalPages = Math.ceil(filteredUsers.length / usersPerPage)
+  useEffect(() => {
+    const filtered = data.filter(item =>
+      columns.some(column => {
+        const value = item[column.key]
+        return String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      })
+    )
+    setFilteredData(filtered)
+    setCurrentPage(1)
+  }, [searchTerm, data, columns])
+
+  // Lógica de paginação
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage)
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+
+
 
   return (
     <TableWrapper>
       <TableHeader>
-        <Title>ED</Title>
+        <Title>{title}</Title>
         
-        <SearchBox>
-          <SearchIcon>
-            <FiSearch />
-          </SearchIcon>
-          <SearchInput
-            type="text"
-            placeholder="Buscar usuários..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </SearchBox>
+        {searchable && (
+          <SearchBox>
+            <SearchIcon>
+              <FiSearch />
+            </SearchIcon>
+            <SearchInput
+              type="text"
+              placeholder={`Buscar ${title.toLowerCase()}...`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </SearchBox>
+        )}
       </TableHeader>
 
       <Table>
         <TableHead>
           <tr>
-            <Th>ID</Th>
-            <Th>Nome</Th>
-            <Th>E-mail</Th>
-            <Th>Cargo</Th>
-            <Th>Status</Th>
+            {columns.map(column => (
+              <Th key={String(column.key)}>{column.label}</Th>
+            ))}
           </tr>
         </TableHead>
         <tbody>
-          {currentUsers.length > 0 ? (
-            currentUsers.map((user) => (
-              <tr key={user.id}>
-                <Td>{user.id}</Td>
-                <Td>{user.name}</Td>
-                <Td>{user.email}</Td>
-                <Td>{user.role}</Td>
-                <Td>
-                  <StatusBadge status={user.status}>
-                    {user.status}
-                  </StatusBadge>
-                </Td>
+          {currentItems.length > 0 ? (
+            currentItems.map((item) => (
+              <tr key={item.id}>
+                {columns.map(column => (
+                  <Td key={String(column.key)}>
+                    
+                  </Td>
+                ))}
               </tr>
             ))
           ) : (
             <tr>
-              <Td colSpan={5} style={{ textAlign: 'center', padding: '20px' }}>
-                Nenhum usuário encontrado
+              <Td colSpan={columns.length} style={{ textAlign: 'center', padding: '20px' }}>
+                Nenhum registro encontrado
               </Td>
             </tr>
           )}
         </tbody>
       </Table>
 
-      {filteredUsers.length > usersPerPage && (
+      {filteredData.length > itemsPerPage && (
         <PaginationContainer>
           <PaginationInfo>
-            Mostrando {indexOfFirstUser + 1} a{' '}
-            {Math.min(indexOfLastUser, filteredUsers.length)} de{' '}
-            {filteredUsers.length} registros
+            Mostrando {indexOfFirstItem + 1} a{' '}
+            {Math.min(indexOfLastItem, filteredData.length)} de{' '}
+            {filteredData.length} registros
           </PaginationInfo>
           
           <PaginationButtons>
