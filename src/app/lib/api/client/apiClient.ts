@@ -1,3 +1,6 @@
+
+// configuracao da api aqui
+
 import axios, {
   AxiosInstance,
   InternalAxiosRequestConfig,
@@ -5,10 +8,11 @@ import axios, {
   AxiosError
 } from 'axios';
 
+// definimos de onde vem o back end
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3050';
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL, // api aqui
   withCredentials: true, // Importante para CORS com credenciais
   timeout: 10000,
   headers: {

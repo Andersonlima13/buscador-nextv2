@@ -1,4 +1,5 @@
 // components/SmartUserTable.tsx
+// Component de Listagem, deve ser reaproveitado para listar alunos ou usuarios (TI,COORDENACAO,DIRECAO)
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -7,12 +8,6 @@ import { FiChevronLeft } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
 import { FiSearch } from 'react-icons/fi'
 
-type User = {
-  id: number
-  name: string
-  email: string
-  role: string
-}
 
 // Tipagem genérica
 type TableColumn<T> = {
@@ -30,11 +25,6 @@ interface ListProps<T> {
   itemsPerPage?: number
   searchable?: boolean
 }
-
-
-
-
-
 
 
 
@@ -234,11 +224,12 @@ export function List<T extends { id: number | string }>({
     currentItems.map((item) => (
       <tr key={item.id}>
         {columns.map(column => (
-          <Td key={String(column.key)}>
-            {String(item[column.key as keyof T])} {/* Adicione esta linha */}
+          <Td key={String(column.key)}> 
+            {String(item[column.key as keyof T])} {}   
           </Td>
         ))}
       </tr>
+      // acessa dinamicamente via item[column.key as keyof T] cada propriedade de student
     ))
   ) : (
     <tr>
@@ -248,9 +239,10 @@ export function List<T extends { id: number | string }>({
     </tr>
   )}
 </tbody>
+
       </Table>
 
-      {filteredData.length > itemsPerPage && (
+      {filteredData.length > itemsPerPage && ( // mostrando aqui a quantidade de alunos presente no banco a partir da func filteddata
         <PaginationContainer>
           <PaginationInfo>
             Mostrando {indexOfFirstItem + 1} a{' '}
@@ -258,9 +250,9 @@ export function List<T extends { id: number | string }>({
             {filteredData.length} registros
           </PaginationInfo>
           
-          <PaginationButtons>
+          <PaginationButtons>  
             <PaginationButton
-              onClick={() => paginate(currentPage - 1)}
+              onClick={() => paginate(currentPage - 1)} // logica de paginacao , de acordo com quantos alunos temos no banco
               disabled={currentPage === 1}
             >
               <FiChevronLeft />

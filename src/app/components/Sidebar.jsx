@@ -1,6 +1,6 @@
 // src/components/Sidebar.jsx
 "use client"
-
+// sidebar , vamos importar para todas as paginas
 import React from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import Link from "next/link";

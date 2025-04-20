@@ -1,5 +1,5 @@
 "use client"
-
+// aqui onde vamos renderizar a lista de alunos
 import { useEffect, useState } from "react";
 import { List } from "../components/List";
 import SidebarComponent from "../components/Sidebar";
@@ -55,7 +55,7 @@ export default function Home() {
       <SidebarComponent />
       <div style={{ flex: 1, padding: '20px' }}>
         <List<Student>
-          title="Alunos"
+          title="Listagem De Alunos"
           data={students}
           columns={[
             { key: 'id', label: 'Matrícula' },
@@ -63,19 +63,8 @@ export default function Home() {
             { key: 'serie', label: 'serie' },
             { key: 'unidade', label: 'unidade' },
             { key: 'email', label: 'email' },
-            { key: 'senha_email', label: 'senha_email' },
-            { key: 'matricula', label: 'matricula' },
-            { key: 'senha_app', label: 'senha_app' },
-            { key: 'sfb', label: 'sfb' },
-            { key: 'senha_sfb', label: 'senha_sfb' },
-            { key: 'richmond', label: 'richmond' },
-            { key: 'senha_r', label: 'senha_r' },
-            { key: 'arvore_senha', label: 'arvore_senha' },
-            { key: 'evolucional', label: 'evolucional' },
-            { key: 'senha_evo', label: 'senha_evo' },
-            { key: 'medalhei', label: 'medalhei' }
-
-
+          
+          
 
             // Remova completamente o bloco do status
           ]}
