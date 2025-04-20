@@ -4,14 +4,8 @@ import { useEffect, useState } from "react";
 import { List } from "../components/List";
 import SidebarComponent from "../components/Sidebar";
 import { fetchStudents } from '../lib/api/services/studentService';
+import { Student } from "../lib/types/student";
 
-type Student = {
-  id: number;
-  name: string;
-  email: string;
-  class: string;
-  // Remova o status se não for usar
-}
 
 export default function Home() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -64,10 +58,25 @@ export default function Home() {
           title="Alunos"
           data={students}
           columns={[
-            { key: 'id', label: 'ID' },
-            { key: 'name', label: 'Nome' },
-            { key: 'email', label: 'E-mail' },
-            { key: 'class', label: 'Turma' }
+            { key: 'id', label: 'Matrícula' },
+            { key: 'nome', label: 'nome' },
+            { key: 'serie', label: 'serie' },
+            { key: 'unidade', label: 'unidade' },
+            { key: 'email', label: 'email' },
+            { key: 'senha_email', label: 'senha_email' },
+            { key: 'matricula', label: 'matricula' },
+            { key: 'senha_app', label: 'senha_app' },
+            { key: 'sfb', label: 'sfb' },
+            { key: 'senha_sfb', label: 'senha_sfb' },
+            { key: 'richmond', label: 'richmond' },
+            { key: 'senha_r', label: 'senha_r' },
+            { key: 'arvore_senha', label: 'arvore_senha' },
+            { key: 'evolucional', label: 'evolucional' },
+            { key: 'senha_evo', label: 'senha_evo' },
+            { key: 'medalhei', label: 'medalhei' }
+
+
+
             // Remova completamente o bloco do status
           ]}
         />

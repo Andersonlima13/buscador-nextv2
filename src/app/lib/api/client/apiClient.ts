@@ -1,27 +1,47 @@
-/// Configuração BASE do Axios/fetch
-// fazendo aqui a configuracao da api , onde conectaremos com o back-end em node js
+import axios, {
+  AxiosInstance,
+  InternalAxiosRequestConfig,
+  AxiosResponse,
+  AxiosError
+} from 'axios';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3050';
 
-// src/lib/api/client/apiClient.ts
-import axios from 'axios';
-
-// 1. Configuração base
-const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // Sua URL base
-  timeout: 10000, // 10 segundos
+const apiClient: AxiosInstance = axios.create({
+  baseURL: API_URL,
+  withCredentials: true, // Importante para CORS com credenciais
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   }
 });
 
+// Interceptor de Request com tipagem correta
+apiClient.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    const fullUrl = `${config.baseURL}${config.url}`;
+    
+    console.log('[AXIOS] Request para:', fullUrl);
+    console.log('Variáveis de ambiente:', {
+      API_URL: process.env.NEXT_PUBLIC_API_URL,
+      NODE_ENV: process.env.NODE_ENV
+    });
 
+    return config;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  }
+);
 
+// Interceptor de Response com tipagem correta
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Tratamento global de erros
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
     if (error.response?.status === 401) {
-      window.location.href = '/login'; // Redireciona se não autorizado
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

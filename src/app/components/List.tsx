@@ -230,24 +230,24 @@ export function List<T extends { id: number | string }>({
           </tr>
         </TableHead>
         <tbody>
-          {currentItems.length > 0 ? (
-            currentItems.map((item) => (
-              <tr key={item.id}>
-                {columns.map(column => (
-                  <Td key={String(column.key)}>
-                    
-                  </Td>
-                ))}
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <Td colSpan={columns.length} style={{ textAlign: 'center', padding: '20px' }}>
-                Nenhum registro encontrado
-              </Td>
-            </tr>
-          )}
-        </tbody>
+  {currentItems.length > 0 ? (
+    currentItems.map((item) => (
+      <tr key={item.id}>
+        {columns.map(column => (
+          <Td key={String(column.key)}>
+            {String(item[column.key as keyof T])} {/* Adicione esta linha */}
+          </Td>
+        ))}
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <Td colSpan={columns.length} style={{ textAlign: 'center', padding: '20px' }}>
+        Nenhum registro encontrado
+      </Td>
+    </tr>
+  )}
+</tbody>
       </Table>
 
       {filteredData.length > itemsPerPage && (
