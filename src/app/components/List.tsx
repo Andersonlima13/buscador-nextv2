@@ -30,8 +30,8 @@ interface ListProps<T> {
 
 // Componentes estilizados
 const TableWrapper = styled.div`
-  background: #fff;
-  border-radius: 8px;
+background-color:#c5f0c5;
+border-radius: 8px;
   box-shadow: 0 0 1px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.05);
   padding: 24px;
   font-family: 'Source Sans Pro', sans-serif;
@@ -53,11 +53,13 @@ const TableHeader = styled.div`
 const Title = styled.h2`
   font-size: 24px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #4682B4;
   margin: 0;
 `
 
 const SearchBox = styled.div`
+color: #white ;
+
   position: relative;
   width: 100%;
 
@@ -67,6 +69,9 @@ const SearchBox = styled.div`
 `
 
 const SearchInput = styled.input`
+background-color: #a2d2fa;
+color:white;
+ font:white;
   width: 80%;
   padding: 8px 12px 8px 36px;
   border: 1px solid #ddd;
@@ -75,7 +80,7 @@ const SearchInput = styled.input`
   transition: all 0.3s;
 
   &:focus {
-    border-color: #3c8dbc;
+    border-color: #4682B4;
     box-shadow: 0 0 0 3px rgba(60, 141, 188, 0.1);
     outline: none;
   }
@@ -86,17 +91,18 @@ const SearchIcon = styled.span`
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #999;
+  color:#4682B4;
 `
 
 const Table = styled.table`
+  background-color:#a2d2fa;
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 16px;
 `
 
 const TableHead = styled.thead`
-  background-color: #f4f6f9;
+  background-color:#4682B4;;
 `
 
 const Th = styled.th`
@@ -110,6 +116,7 @@ const Th = styled.th`
 `
 
 const Td = styled.td`
+
   padding: 12px 16px;
   font-size: 14px;
   color: #444;
@@ -126,16 +133,19 @@ const PaginationContainer = styled.div`
 `
 
 const PaginationInfo = styled.span`
+
   font-size: 14px;
   color: #666;
 `
 
 const PaginationButtons = styled.div`
+
   display: flex;
   gap: 8px;
 `
 
 const PaginationButton = styled.button<{ active?: boolean; disabled?: boolean }>`
+
   padding: 6px 12px;
   border-radius: 4px;
   font-size: 14px;

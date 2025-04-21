@@ -9,9 +9,13 @@ import styled from "styled-components";
 
 
 
-const SidebarLinkText = styled.span`
+const StyledLinkText = styled.a`
+  color:#4682B4;
   text-decoration: none;
-  color: inherit;
+  font-weight: normal;
+  &:hover {
+    text-decoration: none;
+  }
 `
 
 
@@ -24,7 +28,11 @@ export default function Sidebar_component() {
     style={{
       width: '250px',
       height: '100vh',
-      background: '#33424A', // Mantém o fundo geral da sidebar
+      background: 'green', // Mantém o fundo geral da sidebar
+      position: 'relative',
+
+    top: 0,
+    left: 0,
     }}
   >
     <Sidebar style={{ height: '100%' }}>
@@ -34,13 +42,13 @@ export default function Sidebar_component() {
             // Primeiro nível (MenuItem e SubMenu principais)
             if (level === 0) {
               return {
-                color: '#00646d',
-                backgroundColor: active ? '#00646d' : 'transparent',
+                color: '#4682B4',
+                backgroundColor: active ? '#4682B4' : 'transparent',
                 fontWeight: 'bold',
                 fontSize: '16px',
                 fontFamily: 'Arial, sans-serif',
                 '&:hover': {
-                  backgroundColor: '#007a87', // hoover menu
+                  backgroundColor: '#c5f0c5', // hoover menu
                 },
               };
             }
@@ -48,12 +56,12 @@ export default function Sidebar_component() {
             // Segundo nível (itens dentro dos SubMenus)
             if (level === 1) {
               return {
-                color: '#02383D',  // fontes submenu
-                backgroundColor:  '#118892' ,  // background submenu
+                color: '#C4D6E5',  // fontes submenu
+                backgroundColor:  '#AFD5AF	' ,  // background submenu
                 fontSize: '14px',
                 fontFamily: 'Arial, sans-serif',
                 '&:hover': {
-                  backgroundColor: '#00646d', // hoover submenu
+                  backgroundColor: '#c5f0c5', // hoover submenu
                 },
               };
             }
@@ -68,17 +76,17 @@ export default function Sidebar_component() {
   
         <SubMenu label="Buscador De Login">
           <MenuItem>
-          <SidebarLinkText href="/add-student">Adicionar Alunos</SidebarLinkText>
+          <Link href="/add-student" passHref><StyledLinkText>Adicionar Alunos</StyledLinkText> </Link>
           </MenuItem>
           <MenuItem>
-          <SidebarLinkText href="/home">Buscar Alunos</SidebarLinkText>
+          <Link href="/home" passHref><StyledLinkText>Buscar Aluno</StyledLinkText> </Link>
           </MenuItem>
           
         </SubMenu>
   
         <SubMenu label="Usuários">
-          <MenuItem>Criar Usuário</MenuItem>
-          <MenuItem>Alunos</MenuItem>
+          <MenuItem><Link href="/register" passHref><StyledLinkText>Criar Usuário</StyledLinkText> </Link></MenuItem>
+          <MenuItem><Link href="/users" passHref><StyledLinkText>Gerenciar Usuários</StyledLinkText> </Link></MenuItem>
         </SubMenu>
   
         <MenuItem>Sair</MenuItem>
