@@ -24,54 +24,67 @@ const StyledLinkText = styled.a`
 
 export default function Sidebar_component() {
   return (
-    <div
-    style={{
+    <div style={{
       width: '250px',
       height: '100vh',
-      background: 'green', // Mantém o fundo geral da sidebar
-      position: 'relative',
-
-    top: 0,
-    left: 0,
-    }}
-  >
-    <Sidebar style={{ height: '100%' }}>
-      <Menu
-        menuItemStyles={{
-          button: ({ level, active }) => {
-            // Primeiro nível (MenuItem e SubMenu principais)
-            if (level === 0) {
-              return {
-                color: '#4682B4',
-                backgroundColor: active ? '#4682B4' : 'transparent',
-                fontWeight: 'bold',
-                fontSize: '16px',
-                fontFamily: 'Arial, sans-serif',
-                '&:hover': {
-                  backgroundColor: '#c5f0c5', // hoover menu
-                },
-              };
-            }
-  
-            // Segundo nível (itens dentro dos SubMenus)
-            if (level === 1) {
-              return {
-                color: '#C4D6E5',  // fontes submenu
-                backgroundColor:  '#AFD5AF	' ,  // background submenu
-                fontSize: '14px',
-                fontFamily: 'Arial, sans-serif',
-                '&:hover': {
-                  backgroundColor: '#c5f0c5', // hoover submenu
-                },
-              };
-            }
-          },
-          label: ({ level }) => ({
-            fontFamily: 'Arial, sans-serif',
-            fontWeight: level === 0 ? 'bold' : 'normal',
-          }),
+      background: 'green',
+      position: 'fixed', // Alterado para fixed
+      top: 0, // Fixa no topo
+      left: 0, // Fixa na esquerda
+      margin: 0,
+      padding: 0,
+      overflow: 'hidden', // Remove barras de rolagem indesejadas
+    }}>
+      <Sidebar 
+        rootStyles={{
+          height: '100%',
+          margin: 0,
+          padding: 0,
+          border: 'none', // Remove bordas padrão
         }}
       >
+        <Menu
+          style={{
+            margin: 0,
+            padding: '10px 0', // Ajuste interno apenas vertical
+          }}
+          menuItemStyles={{
+            button: ({ level, active }) => {
+              if (level === 0) {
+                return {
+                  color: '#4682B4',
+                  backgroundColor: active ? '#4682B4' : 'transparent',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                  fontFamily: 'Arial, sans-serif',
+                  margin: 0, // Adicionado
+                  padding: '10px 20px', // Controle explícito
+                  '&:hover': {
+                    backgroundColor: '#c5f0c5',
+                  },
+                };
+              }
+
+              if (level === 1) {
+                return {
+                  color: '#C4D6E5',
+                  backgroundColor: '#AFD5AF',
+                  fontSize: '14px',
+                  fontFamily: 'Arial, sans-serif',
+                  margin: 0, // Adicionado
+                  padding: '8px 20px 8px 30px', // Padding com indentação
+                  '&:hover': {
+                    backgroundColor: '#c5f0c5',
+                  },
+                };
+              }
+            },
+            label: ({ level }) => ({
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: level === 0 ? 'bold' : 'normal',
+            }),
+          }}
+        >
         <MenuItem>Colégio Vila</MenuItem>
   
         <SubMenu label="Buscador De Login">

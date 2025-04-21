@@ -41,7 +41,8 @@ export default function Home() {
 
   if (error) {
     return (
-      <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <div style={{ display: 'flex', minHeight: '100vh' ,margin: '0',
+      padding: '0',}}>
         <SidebarComponent />
         <div style={{ flex: 1, padding: '20px' }}>
           <p style={{ color: 'red' }}>{error}</p>
@@ -51,7 +52,9 @@ export default function Home() {
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' , background:'#a2d2fa', margin:'0'}}>
+    
+    <div style={{ display: 'flex', minHeight: '100vh' , background:'#a2d2fa', marginLeft: '242px', padding: '20px' }}>
+     
       <SidebarComponent />
       <div style={{ flex: 1, padding: '10px' , }}>
         <List<Student>

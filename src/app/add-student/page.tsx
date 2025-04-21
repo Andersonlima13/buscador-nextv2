@@ -3,17 +3,11 @@ import Sidebar_component from "../components/Sidebar";
 
 export default function add_student() {
   return (
-    <div style={{ 
-      display: 'flex',
-      minHeight: '100vh'
-    }}>
-      <Sidebar_component />
-      <div style={{ 
-        flex: 1,
-        padding: '20px'
-      }}>
-        Conteudo pagina de adcionar estudante
+   <>
+   <Sidebar_component/>
+   <div style={{ marginLeft: '250px', padding: '20px' }}>
+        <h1>Conteúdo da página</h1>
       </div>
-    </div>
+   </>
   );
 }
