@@ -6,6 +6,8 @@ import SidebarComponent from "../components/Sidebar";
 import { fetchStudents } from '../lib/api/services/studentService';
 import { Student } from "../lib/types/student";
 import Navbar from "../components/Navbar";
+import { GiHouse } from "react-icons/gi";
+
 
 export default function Home() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -64,10 +66,11 @@ export default function Home() {
     <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginLeft: '242px', padding: '20px' }}>
        <Navbar/>
      
-      <SidebarComponent />
+      <SidebarComponent /> 
       <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginTop: '2px', padding: '20px' }}>
-        <List<Student>
-          title="Listagem De Alunos"
+        <List <Student>
+          
+          title="Listagem De Alunos"  
           data={students}
           columns={[
             { key: 'id', label: 'Matrícula' },
@@ -80,7 +83,7 @@ export default function Home() {
 
             // Remova completamente o bloco do status
           ]}
-        />
+        /> 
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { FiChevronLeft } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
-import { FiSearch } from 'react-icons/fi'
+import { FiSearch, FiList } from 'react-icons/fi'
 
 
 // Tipagem genérica
@@ -30,7 +30,7 @@ interface ListProps<T> {
 
 // Componentes estilizados
 const TableWrapper = styled.div`
-background-color:#dde6f0;
+background-color:#F9FAFB;
 border-radius: 8px;
   box-shadow: 0 0 1px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.05);
   padding: 24px;
@@ -52,11 +52,15 @@ const TableHeader = styled.div`
 `
 
 const Title = styled.h2`
-text-shadow: 1px 1px 1px white;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-shadow: 1px 1px 1px white;
   font-size: 24px;
   font-weight: bold;
   color: #374151;
   margin: 0;
+  padding: 0;
 `
 
 const SearchBox = styled.div`
@@ -70,8 +74,6 @@ const SearchBox = styled.div`
 `
 
 const SearchInput = styled.input`
-background-color: #6F85A8;
-color:white;
   width: 80%;
   padding: 8px 12px 8px 36px;
   border: 1px solid #ddd;
@@ -87,11 +89,11 @@ color:white;
 `
 
 const SearchIcon = styled.span`
+  color:black;
   position: absolute;
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color:white;
 `
 
 const Table = styled.table`
@@ -205,8 +207,11 @@ export function List<T extends { id: number | string }>({
 
   return (
     <TableWrapper>
-      <TableHeader>
-        <Title>{title}</Title>
+      <TableHeader >  
+      <Title>
+  {title}
+  <FiList size={35} />
+</Title>
         
         {searchable && (
           <SearchBox>

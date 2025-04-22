@@ -5,17 +5,19 @@ import React from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import Link from "next/link";
 import styled from "styled-components";
+import { FiSearch,FiPlus,FiSettings } from 'react-icons/fi'
 
 
 
 
 const StyledLinkText = styled.a`
-  color:#4682B;
+  color:#374151;
   text-decoration: none;
   font-weight: normal;
   &:hover {
     text-decoration: none;
   }
+
 `
 
 
@@ -52,7 +54,7 @@ export default function Sidebar_component() {
             button: ({ level, active }) => {
               if (level === 0) {
                 return {
-                  color: '#4682B4',
+                  color: '#374151',
                   backgroundColor: active ? '#00000' : 'transparent',
                   fontWeight: 'bold',
                   fontSize: '16px',
@@ -67,7 +69,7 @@ export default function Sidebar_component() {
 
               if (level === 1) {
                 return {
-                  color: '#C4D6E5',
+                  color: '#374151',
                   backgroundColor: active ? '#00000' : 'transparent',
 
                   fontSize: '14px',
@@ -89,18 +91,71 @@ export default function Sidebar_component() {
         <MenuItem>Colégio Vila</MenuItem>
   
         <SubMenu label="Buscador De Login">
-          <MenuItem>
-          <Link href="/add-student" passHref><StyledLinkText>Adicionar Alunos</StyledLinkText> </Link>
-          </MenuItem>
-          <MenuItem>
-          <Link href="/home" passHref><StyledLinkText>Buscar Aluno</StyledLinkText> </Link>
-          </MenuItem>
-          
-        </SubMenu>
+  <MenuItem>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px' // Espaço do ícone na direita
+    }}>
+      <Link href="/add-student" passHref >
+        <StyledLinkText>Adicionar Alunos</StyledLinkText>
+      </Link>
+      <FiPlus style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+  
+  <MenuItem>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/home" passHref>
+        <StyledLinkText>Buscar Aluno</StyledLinkText>
+      </Link>
+      <FiSearch  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+</SubMenu>
   
         <SubMenu label="Usuários">
-          <MenuItem><Link href="/register" passHref><StyledLinkText>Criar Usuário</StyledLinkText> </Link></MenuItem>
-          <MenuItem><Link href="/users" passHref><StyledLinkText>Gerenciar Usuários</StyledLinkText> </Link></MenuItem>
+        
+        <MenuItem>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px' // Espaço do ícone na direita
+    }}>
+      <Link href="/add-student" passHref  >
+        <StyledLinkText>Criar Usuário</StyledLinkText>
+      </Link>
+      <FiPlus style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+  
+  <MenuItem>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/home" passHref>
+        <StyledLinkText>Gerenciar Usuários</StyledLinkText>
+      </Link>
+      <FiSettings  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+
+
+
         </SubMenu>
   
       

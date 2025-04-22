@@ -3,6 +3,9 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import { LuLogOut } from "react-icons/lu";
+import { FaUser } from "react-icons/fa";
+import { FaHouseChimney } from "react-icons/fa6";
 
 const StyledLinkText = styled.a`
   color: #ffff;
@@ -54,15 +57,18 @@ export default function Navbar() {
   return (
     <NavContainer>
       <LeftSection>
-        <NavTitle>Colégio Vila</NavTitle>
+        
+        <NavTitle>Colégio Vila   </NavTitle><StyledLinkText><FaHouseChimney/></StyledLinkText>
+      
       </LeftSection>
       
       <RightSection>
-        <Link href="/profile" passHref>
-          <StyledLinkText>Perfil</StyledLinkText>
+        <Link href="/profile" title="Perfil" passHref>
+          <StyledLinkText><FaUser/></StyledLinkText>
         </Link>
-        <Link href="/logout" passHref>
-          <StyledLinkText>Sair</StyledLinkText>
+        <Link href="/logout" title="Sair" passHref>
+        <StyledLinkText> <LuLogOut/></StyledLinkText>
+         
         </Link>
       </RightSection>
     </NavContainer>
