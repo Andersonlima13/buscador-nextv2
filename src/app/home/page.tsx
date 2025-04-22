@@ -30,17 +30,23 @@ export default function Home() {
 
   if (loading) {
     return (
+      <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginLeft: '242px', padding: '20px' }}>
+      <Navbar/>
       <div style={{ display: 'flex', minHeight: '100vh' }}>
         <SidebarComponent />
         <div style={{ flex: 1, padding: '20px' }}>
           <p>Carregando alunos...</p>
         </div>
       </div>
+      </div>
     );
   }
 
   if (error) {
     return (
+    <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginLeft: '242px', padding: '20px' }}>
+      <Navbar/>
+
       <div style={{ display: 'flex', minHeight: '100vh' ,margin: '0',
       padding: '0',}}>
         <SidebarComponent />
@@ -48,6 +54,8 @@ export default function Home() {
           <p style={{ color: 'red' }}>{error}</p>
         </div>
       </div>
+      </div>
+
     );
   }
 
