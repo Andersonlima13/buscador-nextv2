@@ -70,8 +70,8 @@ const SearchBox = styled.div`
 `
 
 const SearchInput = styled.input`
-background-color: #a2d2fa;
-color:#00000;
+background-color: #6F85A8;
+color:white;
   width: 80%;
   padding: 8px 12px 8px 36px;
   border: 1px solid #ddd;
@@ -80,7 +80,7 @@ color:#00000;
   transition: all 0.3s;
 
   &:focus {
-    border-color: #4682B4;
+    border-color: #SearchInput;
     box-shadow: 0 0 0 3px rgba(60, 141, 188, 0.1);
     outline: none;
   }
@@ -91,7 +91,7 @@ const SearchIcon = styled.span`
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color:#4682B4;
+  color:white;
 `
 
 const Table = styled.table`
