@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 
 const StyledLinkText = styled.a`
-  color:#4682B4;
+  color:#4682B;
   text-decoration: none;
   font-weight: normal;
   &:hover {
@@ -27,7 +27,7 @@ export default function Sidebar_component() {
     <div style={{
       width: '250px',
       height: '100vh',
-      background: 'green',
+      background: '#DDE6F0',
       position: 'fixed', // Alterado para fixed
       top: 0, // Fixa no topo
       left: 0, // Fixa na esquerda
@@ -53,14 +53,14 @@ export default function Sidebar_component() {
               if (level === 0) {
                 return {
                   color: '#4682B4',
-                  backgroundColor: active ? '#4682B4' : 'transparent',
+                  backgroundColor: active ? '#00000' : 'transparent',
                   fontWeight: 'bold',
                   fontSize: '16px',
                   fontFamily: 'Arial, sans-serif',
                   margin: 0, // Adicionado
                   padding: '10px 20px', // Controle explícito
                   '&:hover': {
-                    backgroundColor: '#c5f0c5',
+                    backgroundColor: '#00000',
                   },
                 };
               }
@@ -68,13 +68,14 @@ export default function Sidebar_component() {
               if (level === 1) {
                 return {
                   color: '#C4D6E5',
-                  backgroundColor: '#AFD5AF',
+                  backgroundColor: active ? '#00000' : 'transparent',
+
                   fontSize: '14px',
                   fontFamily: 'Arial, sans-serif',
                   margin: 0, // Adicionado
                   padding: '8px 20px 8px 30px', // Padding com indentação
                   '&:hover': {
-                    backgroundColor: '#c5f0c5',
+                    backgroundColor: '#C4D6E5',
                   },
                 };
               }
@@ -102,7 +103,7 @@ export default function Sidebar_component() {
           <MenuItem><Link href="/users" passHref><StyledLinkText>Gerenciar Usuários</StyledLinkText> </Link></MenuItem>
         </SubMenu>
   
-        <MenuItem>Sair</MenuItem>
+      
       </Menu>
     </Sidebar>
   </div>

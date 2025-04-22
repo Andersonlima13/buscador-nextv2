@@ -5,7 +5,7 @@ import { List } from "../components/List";
 import SidebarComponent from "../components/Sidebar";
 import { fetchStudents } from '../lib/api/services/studentService';
 import { Student } from "../lib/types/student";
-
+import Navbar from "../components/Navbar";
 
 export default function Home() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -53,10 +53,11 @@ export default function Home() {
 
   return (
     
-    <div style={{ display: 'flex', minHeight: '100vh' , background:'#a2d2fa', marginLeft: '242px', padding: '20px' }}>
+    <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginLeft: '242px', padding: '20px' }}>
+       <Navbar/>
      
       <SidebarComponent />
-      <div style={{ flex: 1, padding: '10px' , }}>
+      <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginTop: '2px', padding: '20px' }}>
         <List<Student>
           title="Listagem De Alunos"
           data={students}
