@@ -66,7 +66,7 @@ export default function Navbar() {
         <Link href="/profile" title="Perfil" passHref>
           <StyledLinkText><FaUser/></StyledLinkText>
         </Link>
-        <Link href="/logout" title="Sair" passHref>
+        <Link href="/login" title="Sair" passHref>
         <StyledLinkText> <LuLogOut/></StyledLinkText>
          
         </Link>

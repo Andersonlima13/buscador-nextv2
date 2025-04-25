@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { FiChevronLeft } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
 import { FiSearch, FiList } from 'react-icons/fi'
+import Link from 'next/link'
 
 
 // Tipagem genérica
@@ -27,7 +28,19 @@ interface ListProps<T> {
 }
 
 
+const StudentNameLink = styled.div` // Mudamos de 'a' para 'div'
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: inline;
 
+  &:hover {
+    color: #c5e3f6;
+    text-decoration: underline;
+  }
+`;
 // Componentes estilizados
 const TableWrapper = styled.div`
 background-color:#F9FAFB;
@@ -239,11 +252,19 @@ export function List<T extends { id: number | string }>({
         <tbody>
   {currentItems.length > 0 ? (
     currentItems.map((item) => (
-      <tr key={item.id}>
+      <tr key={item.id} >
         {columns.map(column => (
-          <Td key={String(column.key)}> 
-            {String(item[column.key as keyof T])} {}   
-          </Td>
+       <Td key={String(column.key) }  title="Vizualizar Card">
+       {column.key === 'nome' ? (
+         <Link href={`/alunos/${item.id}`} passHref legacyBehavior>
+           <StudentNameLink>
+             {String(item[column.key as keyof T])}
+           </StudentNameLink>
+         </Link>
+       ) : (
+         <div>{String(item[column.key as keyof T])}</div>
+       )}
+     </Td>
         ))}
       </tr>
       // acessa dinamicamente via item[column.key as keyof T] cada propriedade de student
