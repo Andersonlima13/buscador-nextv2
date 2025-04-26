@@ -1,13 +1,13 @@
 // modelo aluno (como ele deve estar disposto no bd)
 
 export type Student = {
-  id: string; // Será a matrícula
+  id: string;
+  matricula: string;
   nome: string;
   serie: string;
   unidade: string;
   email: string;
   senha_email: string;
-  matricula: string;
   senha_app: string;
   sfb: string;
   senha_sfb: string;

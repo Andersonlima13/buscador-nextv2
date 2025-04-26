@@ -6,7 +6,6 @@ import SidebarComponent from "../components/Sidebar";
 import { fetchStudents } from '../lib/api/services/studentService';
 import { Student } from "../lib/types/student";
 import Navbar from "../components/Navbar";
-import { GiHouse } from "react-icons/gi";
 
 
 export default function Home() {
