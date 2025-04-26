@@ -5,6 +5,82 @@ import { fetchStudentByMatricula } from '@/app/lib/api/services/studentService';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Student } from '@/app/lib/types/student';
+import styled from 'styled-components';
+
+
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const Card = styled.div`
+  width: 250px;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  background: #f0f0f0;
+  box-shadow: 10px 10px 20px #cbced1, -10px -10px 20px #ffffff;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+`;
+
+const ProfilePic = styled.img`
+  width: 60%;
+  max-width: 150px;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+`;
+
+const Info = styled.div`
+  padding: 10px 0;
+
+  p {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+
+    strong {
+      margin-right: 5px;
+    }
+  }
+`;
+
+const SocialLinks = styled.div`
+  margin-top: 10px;
+
+  a {
+    display: inline-block;
+    margin-right: 10px;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default function AlunoDetalhes({ params }: { params: { matricula: string } }) {
   const [aluno, setAluno] = useState<Student | null>(null);
@@ -78,29 +154,126 @@ export default function AlunoDetalhes({ params }: { params: { matricula: string 
   }
 
   return (
-    <div className="p-5 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
-      <header className="mb-6 border-b pb-4">
-        <h1 className="text-2xl font-bold text-gray-800">{aluno.nome}</h1>
-        <p className="text-gray-600">Matrícula: {aluno.matricula}</p>
-      </header>
+
+
+    <Container>
+    <Card>
+      <ProfilePic src="https://via.placeholder.com/150" alt="Profile" />
+
+    
+      <Info>
+        <>{aluno.nome && (
+            <>
+            <p className="text-gray-700"><strong> <span className="font-medium">NOME:</span></strong> {aluno.nome}</p>
+            <p className="text-gray-700"><strong> <span className="font-medium">SÉRIE:</span></strong> {aluno.serie}</p>
+            </>
+          )}
+          </>
+
+          <>{aluno.serie && (
+            <>
+            <p className="text-gray-700"><strong> <span className="font-medium">UNIDADE:</span></strong> {aluno.unidade}</p>
+            <p className="text-gray-700"><strong> <span className="font-medium">E-MAIL:</span></strong> {aluno.email}</p>
+            </>
+          )}
+          </>
+
+          <>{aluno.serie && (
+            <>
+            <p className="text-gray-700"><strong> <span className="font-medium">SENHA EMAIL:</span></strong> {aluno.senha_email}</p>
+            <p className="text-gray-700"><strong> <span className="font-medium">SFB</span></strong> {aluno.sfb}</p>
+            </>
+          )}
+          </>
+
+          <>{aluno.serie && (
+            <>
+            <p className="text-gray-700"><strong> <span className="font-medium">SENHA SFB:</span></strong> {aluno.senha_sfb}</p>
+            <p className="text-gray-700"><strong> <span className="font-medium">RICHMOND:</span></strong> {aluno.richmond}</p>
+            </>
+          )}
+          </>
+
+          <>{aluno.serie && (
+            <>
+            <p className="text-gray-700"><strong> <span className="font-medium">SENHA RICHMOND</span></strong> {aluno.senha_r}</p>
+            <p className="text-gray-700"><strong> <span className="font-medium">unidade:</span></strong> {aluno.unidade}</p>
+            </>
+          )}
+          </>
+
+
+          <>{aluno.serie && (
+            <>
+            <p className="text-gray-700"><strong> <span className="font-medium">Nome:</span></strong> {aluno.nome}</p>
+            <p className="text-gray-700"><strong> <span className="font-medium">unidade:</span></strong> {aluno.unidade}</p>
+            </>
+          )}
+          </>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </Info>     
   
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          {aluno.serie && (
-            <p className="text-gray-700"><span className="font-medium">Série:</span> {aluno.serie}</p>
+    </Card>
+
+
+
+    <Card>
+      <ProfilePic src="https://via.placeholder.com/150" alt="Profile" />
+
+    
+      <Info>
+        <p>{aluno.serie && (
+            <p className="text-gray-700"><strong> <span className="font-medium">Nome:</span></strong> {aluno.nome}</p>
           )}
-          {aluno.unidade && (
-            <p className="text-gray-700"><span className="font-medium">Unidade:</span> {aluno.unidade}</p>
+          </p>
+          <p>{aluno.serie && (
+            <p className="text-gray-700"><strong> <span className="font-medium">Série:</span></strong> {aluno.serie}</p>
           )}
-        </div>
-        
-        <div>
-          <h3 className="font-medium mb-2">Contato</h3>
-          {aluno.email && (
-            <p className="text-gray-700"><span className="font-medium">Email:</span> {aluno.email}</p>
+          </p>
+          <p>{aluno.serie && (
+            <p className="text-gray-700"><strong> <span className="font-medium">:</span></strong> {aluno.serie}</p>
           )}
-        </div>
-      </div>
-    </div>
-  );
-}
+          </p>
+          <p>{aluno.serie && (
+            <p className="text-gray-700"><strong> <span className="font-medium">Série:</span></strong> {aluno.serie}</p>
+          )}
+          </p>
+      </Info>
+          
+    </Card>
+  </Container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+)}
