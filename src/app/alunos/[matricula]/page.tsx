@@ -6,7 +6,27 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Student } from '@/app/lib/types/student';
 import styled from 'styled-components';
+import { FiExternalLink } from 'react-icons/fi';
 
+
+const AccessLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  color: blue;
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+
+  &:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+
+  svg {
+    margin-right: 4px;
+  }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -15,11 +35,11 @@ const Container = styled.div`
 `;
 
 const Card = styled.div`
-  width: 250px;
+  width: 600px;
   margin: 20px;
-  padding: 20px;
+  padding: 10px;
   border-radius: 20px;
-  background: #f0f0f0;
+  background: linear-gradient(90deg,rgba(76, 160, 194, 1) 0%, rgba(132, 219, 168, 1) 50%);
   box-shadow: 10px 10px 20px #cbced1, -10px -10px 20px #ffffff;
   transition: transform 0.3s ease-in-out;
   display: flex;
@@ -32,7 +52,7 @@ const Card = styled.div`
 `;
 
 const ProfilePic = styled.img`
-  width: 60%;
+  width: 40%;
   max-width: 150px;
   height: auto;
   border-radius: 50%;
@@ -54,24 +74,62 @@ const Info = styled.div`
   }
 `;
 
-const SocialLinks = styled.div`
-  margin-top: 10px;
 
-  a {
+
+const InfoSection = styled.div<{ title?: string }>`
+  position: relative;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+
+  &::before {
+    content: "${props => props.title || ''}";
     display: inline-block;
-    margin-right: 10px;
-    transition: transform 0.3s ease-in-out;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
 
-    &:hover {
-      transform: scale(1.2);
-    }
+  &:last-child {
+    border-bottom: none;
   }
 `;
 
+const SectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+`;
 
+const InfoItem = ({ label, value }: { label: string; value: string }) => (
+  <InfoItemContainer>
+    <Label>{label}:</Label>
+    <Value>{value}</Value>
+  </InfoItemContainer>
+);
 
+const InfoItemContainer = styled.div`
+  display: flex;
+  margin: 0.3rem 0;
+  align-items: baseline;
+`;
 
+const Label = styled.span`
+  font-weight: 600;
+  color: #444;
+  min-width: 120px;
+  font-size: 0.8rem;
+`;
 
+const Value = styled.span`
+  color: #333;
+  word-break: break-word;
+  flex-grow: 1;
+
+`
 
 
 
@@ -157,106 +215,102 @@ export default function AlunoDetalhes({ params }: { params: { matricula: string 
 
 
     <Container>
-    <Card>
-      <ProfilePic src="https://via.placeholder.com/150" alt="Profile" />
-
-    
-      <Info>
-        <>{aluno.nome && (
-            <>
-            <p className="text-gray-700"><strong> <span className="font-medium">NOME:</span></strong> {aluno.nome}</p>
-            <p className="text-gray-700"><strong> <span className="font-medium">SÉRIE:</span></strong> {aluno.serie}</p>
-            </>
-          )}
-          </>
-
-          <>{aluno.serie && (
-            <>
-            <p className="text-gray-700"><strong> <span className="font-medium">UNIDADE:</span></strong> {aluno.unidade}</p>
-            <p className="text-gray-700"><strong> <span className="font-medium">E-MAIL:</span></strong> {aluno.email}</p>
-            </>
-          )}
-          </>
-
-          <>{aluno.serie && (
-            <>
-            <p className="text-gray-700"><strong> <span className="font-medium">SENHA EMAIL:</span></strong> {aluno.senha_email}</p>
-            <p className="text-gray-700"><strong> <span className="font-medium">SFB</span></strong> {aluno.sfb}</p>
-            </>
-          )}
-          </>
-
-          <>{aluno.serie && (
-            <>
-            <p className="text-gray-700"><strong> <span className="font-medium">SENHA SFB:</span></strong> {aluno.senha_sfb}</p>
-            <p className="text-gray-700"><strong> <span className="font-medium">RICHMOND:</span></strong> {aluno.richmond}</p>
-            </>
-          )}
-          </>
-
-          <>{aluno.serie && (
-            <>
-            <p className="text-gray-700"><strong> <span className="font-medium">SENHA RICHMOND</span></strong> {aluno.senha_r}</p>
-            <p className="text-gray-700"><strong> <span className="font-medium">unidade:</span></strong> {aluno.unidade}</p>
-            </>
-          )}
-          </>
-
-
-          <>{aluno.serie && (
-            <>
-            <p className="text-gray-700"><strong> <span className="font-medium">Nome:</span></strong> {aluno.nome}</p>
-            <p className="text-gray-700"><strong> <span className="font-medium">unidade:</span></strong> {aluno.unidade}</p>
-            </>
-          )}
-          </>
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </Info>     
+  <Card>
+  <ProfilePic src="https://cdn-icons-png.flaticon.com/512/4196/4196591.png" alt="Profile" />
   
-    </Card>
+  <Info>
+    {/* Seção Principal */}
+    <InfoSection>
+      <SectionHeader>
+  
+      </SectionHeader>
+      {aluno.nome && <InfoItem label="NOME" value={aluno.nome} />}
+      {aluno.serie && <InfoItem label="SÉRIE" value={aluno.serie} />}
+      {aluno.unidade && <InfoItem label="UNIDADE" value={aluno.unidade} />}
+    </InfoSection>
+
+    {/* E-mail */}
+    <InfoSection>
+      <SectionHeader>
+        <span>E-MAIL</span>
+        <AccessLink href={aluno.email ? `mailto:${aluno.email}` : '#'}>
+          <FiExternalLink /> ACESSE AQUI
+        </AccessLink>
+      </SectionHeader>
+      {aluno.email && <InfoItem label="E-MAIL" value={aluno.email} />}
+      {aluno.senha_email && <InfoItem label="SENHA" value="••••••••" />}
+    </InfoSection>
+
+    {/* SFB */}
+    <InfoSection>
+      <SectionHeader>
+        <span>SFB</span>
+        <AccessLink href="#" onClick={() => window.open('https://www.sfb.com.br', '_blank')}>
+          <FiExternalLink /> ACESSE AQUI
+        </AccessLink>
+      </SectionHeader>
+      {aluno.sfb && <InfoItem label="USUÁRIO" value={aluno.sfb} />}
+      {aluno.senha_sfb && <InfoItem label="SENHA" value="••••••••" />}
+    </InfoSection>
+
+    {/* Adicione as outras seções seguindo o mesmo padrão */}
+    <InfoSection>
+      <SectionHeader>
+        <span>RICHMOND</span>
+        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
+          <FiExternalLink /> ACESSE AQUI
+        </AccessLink>
+      </SectionHeader>
+      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
+      {aluno.senha_r && <InfoItem label="SENHA" value="••••••••" />}
+    </InfoSection>
 
 
+    <InfoSection>
+      <SectionHeader>
+        <span>ARVORE</span>
+        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
+          <FiExternalLink /> ACESSE AQUI
+        </AccessLink>
+      </SectionHeader>
+      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
+      {aluno.senha_r && <InfoItem label="SENHA" value="••••••••" />}
+    </InfoSection>
 
-    <Card>
-      <ProfilePic src="https://via.placeholder.com/150" alt="Profile" />
+    <InfoSection>
+      <SectionHeader>
+        <span>EVOLUCIONAL</span>
+        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
+          <FiExternalLink /> ACESSE AQUI
+        </AccessLink>
+      </SectionHeader>
+      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
+      {aluno.senha_r && <InfoItem label="SENHA" value="••••••••" />}
+    </InfoSection>
+
+    <InfoSection>
+      <SectionHeader>
+        <span>MEDALHEI</span>
+        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
+          <FiExternalLink /> ACESSE AQUI
+        </AccessLink>
+      </SectionHeader>
+      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
+      {aluno.senha_r && <InfoItem label="SENHA" value="••••••••" />}
+    </InfoSection>
 
     
-      <Info>
-        <p>{aluno.serie && (
-            <p className="text-gray-700"><strong> <span className="font-medium">Nome:</span></strong> {aluno.nome}</p>
-          )}
-          </p>
-          <p>{aluno.serie && (
-            <p className="text-gray-700"><strong> <span className="font-medium">Série:</span></strong> {aluno.serie}</p>
-          )}
-          </p>
-          <p>{aluno.serie && (
-            <p className="text-gray-700"><strong> <span className="font-medium">:</span></strong> {aluno.serie}</p>
-          )}
-          </p>
-          <p>{aluno.serie && (
-            <p className="text-gray-700"><strong> <span className="font-medium">Série:</span></strong> {aluno.serie}</p>
-          )}
-          </p>
-      </Info>
-          
-    </Card>
+    
+
+
+
+
+
+
+  </Info>
+</Card>
+
+
   </Container>
 
 
