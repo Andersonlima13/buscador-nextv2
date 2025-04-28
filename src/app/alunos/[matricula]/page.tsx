@@ -29,6 +29,7 @@ const AccessLink = styled.a`
 `;
 
 const Container = styled.div`
+background: #BFC1C4;  
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
