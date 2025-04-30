@@ -29,7 +29,7 @@ const AccessLink = styled.a`
 `;
 
 const Container = styled.div`
-background: #BFC1C4;  
+background:rgb(237, 227, 227);  
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -41,7 +41,7 @@ const Card = styled.div`
   padding: 10px;
   border-radius: 20px;
   background: linear-gradient(90deg,rgba(76, 160, 194, 1) 0%, rgba(132, 219, 168, 1) 50%);
-  box-shadow: 10px 10px 20px #cbced1, -10px -10px 20px #ffffff;
+  box-shadow: 10px 10px 20px #ebebeb, -10px -10px 20px #ffffff;
   transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;

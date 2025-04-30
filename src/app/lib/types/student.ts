@@ -19,6 +19,10 @@ export type Student = {
   medalhei: string;
   };
 
+
+
+
+/// ainda sem uso , deve servir para criar um estudante, o mesmo só deve ter 3 campos como "essenciais"
   
 export type CreateStudentDto = {
     name: string;

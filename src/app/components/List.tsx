@@ -6,7 +6,8 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { FiChevronLeft } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
-import { FiSearch, FiList } from 'react-icons/fi'
+import { FiSearch } from 'react-icons/fi'
+import { FiDownload, FiUpload } from 'react-icons/fi';
 import Link from 'next/link'
 
 
@@ -181,6 +182,35 @@ const PaginationButton = styled.button<{ active?: boolean; disabled?: boolean }>
     cursor: not-allowed;
   }
 `
+const DataContainer = styled.div`
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1); /* Fundo transparente */
+  backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #374151;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+  /* Efeito de hover sutil */
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  
+`;
+
+
+
+
 
 export function List<T extends { id: number | string }>({
   title,
@@ -218,13 +248,68 @@ export function List<T extends { id: number | string }>({
 
 
 
+  const getVisiblePages = (current: number, total: number) => {
+    const visiblePages = 17; // Número máximo de botões de página visíveis (incluindo reticências)
+    
+    if (total <= visiblePages) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+  
+    const half = Math.floor(visiblePages / 2);
+    let start = current - half;
+    let end = current + half;
+  
+    if (start < 1) {
+      start = 1;
+      end = visiblePages;
+    } else if (end > total) {
+      end = total;
+      start = total - visiblePages + 1;
+    }
+  
+    const pages = [];
+    
+    if (start > 1) {
+      pages.push(1);
+      if (start > 2) {
+        pages.push('...');
+      }
+    }
+  
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+  
+    if (end < total) {
+      if (end < total - 1) {
+        pages.push('...');
+      }
+      pages.push(total);
+    }
+  
+    return pages;
+  };
+
+
+
+
+
   return (
     <TableWrapper>
       <TableHeader >  
       <Title>
   {title}
-  <FiList size={35} />
+ 
 </Title>
+    <DataContainer>
+      <FiDownload size={24} style={{ marginRight: '10px' }} />
+       Download de alunos
+    </DataContainer>
+
+    <DataContainer>
+      <FiUpload size={24} style={{ marginRight: '10px' }} />
+      Upload de alunos
+    </DataContainer>
         
         {searchable && (
           <SearchBox>
@@ -282,37 +367,37 @@ export function List<T extends { id: number | string }>({
 
       {filteredData.length > itemsPerPage && ( // mostrando aqui a quantidade de alunos presente no banco a partir da func filteddata
         <PaginationContainer>
-          <PaginationInfo>
-            Mostrando {indexOfFirstItem + 1} a{' '}
-            {Math.min(indexOfLastItem, filteredData.length)} de{' '}
-            {filteredData.length} registros
-          </PaginationInfo>
-          
           <PaginationButtons>  
-            <PaginationButton
-              onClick={() => paginate(currentPage - 1)} // logica de paginacao , de acordo com quantos alunos temos no banco
-              disabled={currentPage === 1}
-            >
-              <FiChevronLeft />
-            </PaginationButton>
-            
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-              <PaginationButton
-                key={number}
-                onClick={() => paginate(number)}
-                active={currentPage === number}
-              >
-                {number}
-              </PaginationButton>
-            ))}
-            
-            <PaginationButton
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <FiChevronRight />
-            </PaginationButton>
-          </PaginationButtons>
+  <PaginationButton
+    onClick={() => paginate(currentPage - 1)}
+    disabled={currentPage === 1}
+  >
+    <FiChevronLeft />
+  </PaginationButton>
+  
+  {getVisiblePages(currentPage, totalPages).map((page, index) => (
+    page === '...' ? (
+      <PaginationButton key={`ellipsis-${index}`} disabled>
+        ...
+      </PaginationButton>
+    ) : (
+      <PaginationButton
+        key={page}
+        onClick={() => paginate(page as number)}
+        active={currentPage === page}
+      >
+        {page}
+      </PaginationButton>
+    )
+  ))}
+  
+  <PaginationButton
+    onClick={() => paginate(currentPage + 1)}
+    disabled={currentPage === totalPages}
+  >
+    <FiChevronRight />
+  </PaginationButton>
+</PaginationButtons>
         </PaginationContainer>
       )}
     </TableWrapper>

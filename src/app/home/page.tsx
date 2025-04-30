@@ -69,7 +69,7 @@ export default function Home() {
       <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginTop: '2px', padding: '20px' }}>
         <List <Student>
           
-          title="Listagem De Alunos"  
+          title="Alunos - Colegio Vila"  
           data={students}
           columns={[
             { key: 'id', label: 'Matrícula' },

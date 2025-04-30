@@ -20,7 +20,7 @@ const apiClient: AxiosInstance = axios.create({
   }
 });
 
-// Interceptor de Request com tipagem correta
+// Interceptor de Request com tipagem correta (debugar se foi para a api correta)
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const fullUrl = `${config.baseURL}${config.url}`;
