@@ -161,26 +161,27 @@ const PaginationButtons = styled.div`
 `
 
 const PaginationButton = styled.button<{ active?: boolean; disabled?: boolean }>`
-
   padding: 6px 12px;
   border-radius: 4px;
   font-size: 14px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => disabled ? 'default' : 'pointer'};
   transition: all 0.2s;
   border: 1px solid #ddd;
   background-color: ${({ active }) => active ? '#3c8dbc' : '#fff'};
   color: ${({ active }) => active ? '#fff' : '#444'};
+  min-width: 36px;
 
   &:hover:not(:disabled) {
     background-color: ${({ active }) => active ? '#367fa9' : '#f4f4f4'};
   }
 
   &:disabled {
-
-    opacity: 0.6;
-    cursor: not-allowed;
+    opacity: ${({ disabled }) => disabled ? 0.6 : 1};
+    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
+    background-color: ${({ disabled }) => disabled ? 'transparent' : ''};
+    border: ${({ disabled }) => disabled ? 'none' : ''};
   }
-`
+`;
 
 export function List<T extends { id: number | string }>({
   title,
@@ -213,6 +214,48 @@ export function List<T extends { id: number | string }>({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem)
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
+  const getVisiblePages = (current: number, total: number) => {
+    const visiblePages = 7; // Número máximo de botões de página visíveis (incluindo reticências)
+    
+    if (total <= visiblePages) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+  
+    const half = Math.floor(visiblePages / 2);
+    let start = current - half;
+    let end = current + half;
+  
+    if (start < 1) {
+      start = 1;
+      end = visiblePages;
+    } else if (end > total) {
+      end = total;
+      start = total - visiblePages + 1;
+    }
+  
+    const pages = [];
+    
+    if (start > 1) {
+      pages.push(1);
+      if (start > 2) {
+        pages.push('...');
+      }
+    }
+  
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+  
+    if (end < total) {
+      if (end < total - 1) {
+        pages.push('...');
+      }
+      pages.push(total);
+    }
+  
+    return pages;
+  };
+  
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
@@ -289,30 +332,36 @@ export function List<T extends { id: number | string }>({
           </PaginationInfo>
           
           <PaginationButtons>  
-            <PaginationButton
-              onClick={() => paginate(currentPage - 1)} // logica de paginacao , de acordo com quantos alunos temos no banco
-              disabled={currentPage === 1}
-            >
-              <FiChevronLeft />
-            </PaginationButton>
-            
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-              <PaginationButton
-                key={number}
-                onClick={() => paginate(number)}
-                active={currentPage === number}
-              >
-                {number}
-              </PaginationButton>
-            ))}
-            
-            <PaginationButton
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <FiChevronRight />
-            </PaginationButton>
-          </PaginationButtons>
+  <PaginationButton
+    onClick={() => paginate(currentPage - 1)}
+    disabled={currentPage === 1}
+  >
+    <FiChevronLeft />
+  </PaginationButton>
+  
+  {getVisiblePages(currentPage, totalPages).map((page, index) => (
+    page === '...' ? (
+      <PaginationButton key={`ellipsis-${index}`} disabled>
+        ...
+      </PaginationButton>
+    ) : (
+      <PaginationButton
+        key={page}
+        onClick={() => paginate(page as number)}
+        active={currentPage === page}
+      >
+        {page}
+      </PaginationButton>
+    )
+  ))}
+  
+  <PaginationButton
+    onClick={() => paginate(currentPage + 1)}
+    disabled={currentPage === totalPages}
+  >
+    <FiChevronRight />
+  </PaginationButton>
+</PaginationButtons>
         </PaginationContainer>
       )}
     </TableWrapper>

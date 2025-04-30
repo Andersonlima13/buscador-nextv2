@@ -99,6 +99,9 @@ const InfoSection = styled.div<{ title?: string }>`
   }
 `;
 
+
+
+
 const SectionHeader = styled.div`
   display: flex;
   align-items: center;
