@@ -297,6 +297,10 @@ export function List<T extends { id: number | string }>({
 
 
 
+  function paginate(arg0: number): void {
+    throw new Error('Function not implemented.')
+  }
+
   return (
     <TableWrapper>
       <TableHeader >  
