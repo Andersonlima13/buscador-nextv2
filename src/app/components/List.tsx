@@ -162,25 +162,27 @@ const PaginationButtons = styled.div`
 `
 
 const PaginationButton = styled.button<{ active?: boolean; disabled?: boolean }>`
-
   padding: 6px 12px;
   border-radius: 4px;
   font-size: 14px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => disabled ? 'default' : 'pointer'};
   transition: all 0.2s;
   border: 1px solid #ddd;
   background-color: ${({ active }) => active ? '#3c8dbc' : '#fff'};
   color: ${({ active }) => active ? '#fff' : '#444'};
+  min-width: 36px;
 
   &:hover:not(:disabled) {
     background-color: ${({ active }) => active ? '#367fa9' : '#f4f4f4'};
   }
 
   &:disabled {
-
-    opacity: 0.6;
-    cursor: not-allowed;
+    opacity: ${({ disabled }) => disabled ? 0.6 : 1};
+    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
+    background-color: ${({ disabled }) => disabled ? 'transparent' : ''};
+    border: ${({ disabled }) => disabled ? 'none' : ''};
   }
+
 `
 const DataContainer = styled.div`
 
@@ -207,6 +209,8 @@ const DataContainer = styled.div`
 
   
 `;
+
+
 
 
 
@@ -243,8 +247,7 @@ export function List<T extends { id: number | string }>({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem)
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+  
 
 
 
