@@ -6,8 +6,7 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { FiChevronLeft } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
-import { FiSearch } from 'react-icons/fi'
-import { FiDownload, FiUpload } from 'react-icons/fi';
+import { FiSearch, FiPlus , FiDownload, FiUpload} from 'react-icons/fi'
 import Link from 'next/link'
 
 
@@ -69,12 +68,12 @@ const Title = styled.h2`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  text-shadow: 1px 1px 1px white;
-  font-size: 24px;
-  font-weight: bold;
+  text-shadow: 1px 1px 1px black;
+  font-size: 22px;
+  font-weight: normal;
   color: #374151;
   margin: 0;
-  padding: 0;
+  padding: 1;
 `
 
 const SearchBox = styled.div`
@@ -162,27 +161,25 @@ const PaginationButtons = styled.div`
 `
 
 const PaginationButton = styled.button<{ active?: boolean; disabled?: boolean }>`
+
   padding: 6px 12px;
   border-radius: 4px;
   font-size: 14px;
-  cursor: ${({ disabled }) => disabled ? 'default' : 'pointer'};
+  cursor: pointer;
   transition: all 0.2s;
   border: 1px solid #ddd;
   background-color: ${({ active }) => active ? '#3c8dbc' : '#fff'};
   color: ${({ active }) => active ? '#fff' : '#444'};
-  min-width: 36px;
 
   &:hover:not(:disabled) {
     background-color: ${({ active }) => active ? '#367fa9' : '#f4f4f4'};
   }
 
   &:disabled {
-    opacity: ${({ disabled }) => disabled ? 0.6 : 1};
-    cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-    background-color: ${({ disabled }) => disabled ? 'transparent' : ''};
-    border: ${({ disabled }) => disabled ? 'none' : ''};
-  }
 
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `
 const DataContainer = styled.div`
 
@@ -209,8 +206,6 @@ const DataContainer = styled.div`
 
   
 `;
-
-
 
 
 
@@ -247,76 +242,34 @@ export function List<T extends { id: number | string }>({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem)
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
-  
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
 
-
-  const getVisiblePages = (current: number, total: number) => {
-    const visiblePages = 17; // Número máximo de botões de página visíveis (incluindo reticências)
-    
-    if (total <= visiblePages) {
-      return Array.from({ length: total }, (_, i) => i + 1);
-    }
-  
-    const half = Math.floor(visiblePages / 2);
-    let start = current - half;
-    let end = current + half;
-  
-    if (start < 1) {
-      start = 1;
-      end = visiblePages;
-    } else if (end > total) {
-      end = total;
-      start = total - visiblePages + 1;
-    }
-  
-    const pages = [];
-    
-    if (start > 1) {
-      pages.push(1);
-      if (start > 2) {
-        pages.push('...');
-      }
-    }
-  
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-  
-    if (end < total) {
-      if (end < total - 1) {
-        pages.push('...');
-      }
-      pages.push(total);
-    }
-  
-    return pages;
-  };
-
-
-
-
-
-  function paginate(arg0: number): void {
-    throw new Error('Function not implemented.')
-  }
 
   return (
     <TableWrapper>
-      <TableHeader >  
+      <TableHeader>         
       <Title>
-  {title}
- 
-</Title>
-    <DataContainer>
+       {title}
+      </Title>
+<DataContainer>
       <FiDownload size={24} style={{ marginRight: '10px' }} />
-       Download de alunos
+       Download de alunos CSV
+    </DataContainer>
+
+    <DataContainer>
+      <FiPlus size={24} style={{ marginRight: '10px' }} />
+     Adcionar Aluno
     </DataContainer>
 
     <DataContainer>
       <FiUpload size={24} style={{ marginRight: '10px' }} />
       Upload de alunos
     </DataContainer>
+      
+
+ 
         
         {searchable && (
           <SearchBox>
@@ -374,37 +327,37 @@ export function List<T extends { id: number | string }>({
 
       {filteredData.length > itemsPerPage && ( // mostrando aqui a quantidade de alunos presente no banco a partir da func filteddata
         <PaginationContainer>
+          <PaginationInfo>
+            Mostrando {indexOfFirstItem + 1} a{' '}
+            {Math.min(indexOfLastItem, filteredData.length)} de{' '}
+            {filteredData.length} registros
+          </PaginationInfo>
+          
           <PaginationButtons>  
-  <PaginationButton
-    onClick={() => paginate(currentPage - 1)}
-    disabled={currentPage === 1}
-  >
-    <FiChevronLeft />
-  </PaginationButton>
-  
-  {getVisiblePages(currentPage, totalPages).map((page, index) => (
-    page === '...' ? (
-      <PaginationButton key={`ellipsis-${index}`} disabled>
-        ...
-      </PaginationButton>
-    ) : (
-      <PaginationButton
-        key={page}
-        onClick={() => paginate(page as number)}
-        active={currentPage === page}
-      >
-        {page}
-      </PaginationButton>
-    )
-  ))}
-  
-  <PaginationButton
-    onClick={() => paginate(currentPage + 1)}
-    disabled={currentPage === totalPages}
-  >
-    <FiChevronRight />
-  </PaginationButton>
-</PaginationButtons>
+            <PaginationButton
+              onClick={() => paginate(currentPage - 1)} // logica de paginacao , de acordo com quantos alunos temos no banco
+              disabled={currentPage === 1}
+            >
+              <FiChevronLeft />
+            </PaginationButton>
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+              <PaginationButton
+                key={number}
+                onClick={() => paginate(number)}
+                active={currentPage === number}
+              >
+                {number}
+              </PaginationButton>
+            ))}
+            
+            <PaginationButton
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              <FiChevronRight />
+            </PaginationButton>
+          </PaginationButtons>
         </PaginationContainer>
       )}
     </TableWrapper>

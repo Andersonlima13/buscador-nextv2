@@ -92,22 +92,7 @@ export default function Sidebar_component() {
   
         <SubMenu label="Buscador De Login">
   <MenuItem>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      width: '100%',
-      paddingRight: '10px' // Espaço do ícone na direita
-    }}>
-      <Link href="/add-student" passHref >
-        <StyledLinkText>Adicionar Alunos</StyledLinkText>
-      </Link>
-      <FiPlus style={{ marginLeft: 'auto' }} />
-    </div>
-  </MenuItem>
-  
-  <MenuItem>
-    <div style={{
+  <div style={{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -115,29 +100,18 @@ export default function Sidebar_component() {
       paddingRight: '10px'
     }}>
       <Link href="/home" passHref>
-        <StyledLinkText>Buscar Aluno</StyledLinkText>
+        <StyledLinkText>Gerenciar Alunos</StyledLinkText>
       </Link>
-      <FiSearch  style={{ marginLeft: 'auto' }} />
+      <FiSettings  style={{ marginLeft: 'auto' }} />
     </div>
   </MenuItem>
+  
+
 </SubMenu>
   
         <SubMenu label="Usuários">
         
-        <MenuItem>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      width: '100%',
-      paddingRight: '10px' // Espaço do ícone na direita
-    }}>
-      <Link href="/add-student" passHref  >
-        <StyledLinkText>Criar Usuário</StyledLinkText>
-      </Link>
-      <FiPlus style={{ marginLeft: 'auto' }} />
-    </div>
-  </MenuItem>
+ 
   
   <MenuItem>
     <div style={{
@@ -147,7 +121,7 @@ export default function Sidebar_component() {
       width: '100%',
       paddingRight: '10px'
     }}>
-      <Link href="/home" passHref>
+      <Link href="/users" passHref>
         <StyledLinkText>Gerenciar Usuários</StyledLinkText>
       </Link>
       <FiSettings  style={{ marginLeft: 'auto' }} />
