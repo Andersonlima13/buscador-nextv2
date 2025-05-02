@@ -325,41 +325,67 @@ export function List<T extends { id: number | string }>({
 
       </Table>
 
-      {filteredData.length > itemsPerPage && ( // mostrando aqui a quantidade de alunos presente no banco a partir da func filteddata
-        <PaginationContainer>
-          <PaginationInfo>
-            Mostrando {indexOfFirstItem + 1} a{' '}
-            {Math.min(indexOfLastItem, filteredData.length)} de{' '}
-            {filteredData.length} registros
-          </PaginationInfo>
-          
-          <PaginationButtons>  
-            <PaginationButton
-              onClick={() => paginate(currentPage - 1)} // logica de paginacao , de acordo com quantos alunos temos no banco
-              disabled={currentPage === 1}
-            >
-              <FiChevronLeft />
-            </PaginationButton>
-            
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-              <PaginationButton
-                key={number}
-                onClick={() => paginate(number)}
-                active={currentPage === number}
-              >
-                {number}
-              </PaginationButton>
-            ))}
-            
-            <PaginationButton
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <FiChevronRight />
-            </PaginationButton>
-          </PaginationButtons>
-        </PaginationContainer>
-      )}
+      {filteredData.length > itemsPerPage && (
+  <PaginationContainer>
+    <PaginationInfo>
+      Mostrando {indexOfFirstItem + 1} a{' '}
+      {Math.min(indexOfLastItem, filteredData.length)} de{' '}
+      {filteredData.length} registros
+    </PaginationInfo>
+    
+    <PaginationButtons>  
+      <PaginationButton
+        onClick={() => paginate(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <FiChevronLeft />
+      </PaginationButton>
+      
+      {/* Lógica para mostrar apenas um intervalo de páginas */}
+      {(() => {
+        const maxVisiblePages = 10; // Quantidade máxima de páginas visíveis
+        let startPage, endPage;
+        
+        if (totalPages <= maxVisiblePages) {
+          // Se tiver menos páginas que o máximo, mostra todas
+          startPage = 1;
+          endPage = totalPages;
+        } else {
+          // Calcula o intervalo de páginas para mostrar
+          const half = Math.floor(maxVisiblePages / 2);
+          if (currentPage <= half) {
+            startPage = 1;
+            endPage = maxVisiblePages;
+          } else if (currentPage + half >= totalPages) {
+            startPage = totalPages - maxVisiblePages + 1;
+            endPage = totalPages;
+          } else {
+            startPage = currentPage - half;
+            endPage = currentPage + half;
+          }
+        }
+        
+        // Renderiza os botões de página no intervalo calculado
+        return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((number) => (
+          <PaginationButton
+            key={number}
+            onClick={() => paginate(number)}
+            active={currentPage === number}
+          >
+            {number}
+          </PaginationButton>
+        ));
+      })()}
+      
+      <PaginationButton
+        onClick={() => paginate(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        <FiChevronRight />
+      </PaginationButton>
+    </PaginationButtons>
+  </PaginationContainer>
+)}
     </TableWrapper>
   )
 }
