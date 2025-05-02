@@ -29,60 +29,34 @@ export default function Home() {
     loadData();
   }, []);
 
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginLeft: '242px', padding: '20px' }}>
-      <Navbar/>
-      <div style={{ display: 'flex', minHeight: '100vh' }}>
-        <SidebarComponent />
-        <div style={{ flex: 1, padding: '20px' }}>
-          <p>Carregando alunos...</p>
-        </div>
-      </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-    <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginLeft: '242px', padding: '20px' }}>
-      <Navbar/>
-
-      <div style={{ display: 'flex', minHeight: '100vh' ,margin: '0',
-      padding: '0',}}>
-        <SidebarComponent />
-        <div style={{ flex: 1, padding: '20px' }}>
-          <p style={{ color: 'red' }}>{error}</p>
-        </div>
-      </div>
-      </div>
-
-    );
-  }
-
   return (
-    
-    <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginLeft: '242px', padding: '20px' }}>
-       <Navbar/>
-     
-      <SidebarComponent /> 
-      <div style={{ display: 'flex', minHeight: '100vh' , background:'#6f85a8', marginTop: '2px', padding: '20px' }}>
-        <List <Student>
-          
-          title="Alunos - Colegio Vila"  
-          data={students}
-          columns={[
-            { key: 'id', label: 'Matrícula' },
-            { key: 'nome', label: 'nome' },
-            { key: 'serie', label: 'serie' },
-            { key: 'unidade', label: 'unidade' },
-            { key: 'email', label: 'email' },
-          
-          
-
-            // Remova completamente o bloco do status
-          ]}
-        /> 
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#6f85a8' }}>
+      <Navbar />
+      <SidebarComponent />
+      
+      <div style={{ 
+        flex: 1, 
+        marginLeft: '242px', // Ajuste conforme a largura da sua sidebar
+        padding: '20px',
+        marginTop: '60px' // Ajuste conforme a altura da sua navbar
+      }}>
+        {loading ? (
+          <p>Carregando alunos...</p>
+        ) : error ? (
+          <p style={{ color: 'red' }}>{error}</p>
+        ) : (
+          <List<Student>
+            title="Alunos - Colegio Vila"  
+            data={students}
+            columns={[
+              { key: 'id', label: 'Matrícula' },
+              { key: 'nome', label: 'nome' },
+              { key: 'serie', label: 'serie' },
+              { key: 'unidade', label: 'unidade' },
+              { key: 'email', label: 'email' },
+            ]}
+          />
+        )}
       </div>
     </div>
   );
