@@ -1,4 +1,4 @@
-// components/SmartUserTable.tsx
+
 // Component de Listagem, deve ser reaproveitado para listar alunos ou usuarios (TI,COORDENACAO,DIRECAO)
 'use client'
 
@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { FiChevronLeft } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
 import { FiSearch, FiPlus , FiDownload, FiUpload} from 'react-icons/fi'
+import { handleDownloadStudents } from '../lib/api/services/studentService'
 import Link from 'next/link'
 
 
@@ -242,7 +243,19 @@ export function List<T extends { id: number | string }>({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem)
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
+  const [isDownloading, setIsDownloading] = useState(false);
 
+const handleDownloadClick = async () => {
+  setIsDownloading(true);
+  try {
+    await handleDownloadStudents();
+  } catch (error) {
+    console.error("Falha no download:", error);
+    // Adicione aqui seu tratamento de erro (toast, alert, etc)
+  } finally {
+    setIsDownloading(false);
+  }
+};
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
 
@@ -253,10 +266,10 @@ export function List<T extends { id: number | string }>({
       <Title>
        {title}
       </Title>
-<DataContainer>
-      <FiDownload size={24} style={{ marginRight: '10px' }} />
-       Download de alunos CSV
-    </DataContainer>
+      <DataContainer onClick={handleDownloadClick}>
+  <FiDownload size={24} style={{ marginRight: '10px' }} />
+  {isDownloading ? 'Gerando arquivo...' : 'Download de alunos'}
+</DataContainer>
 
     <DataContainer>
       <FiPlus size={24} style={{ marginRight: '10px' }} />
@@ -344,7 +357,7 @@ export function List<T extends { id: number | string }>({
       {/* Lógica para mostrar apenas um intervalo de páginas */}
       {(() => {
         const maxVisiblePages = 10; // Quantidade máxima de páginas visíveis
-        let startPage, endPage;
+        let startPage: number, endPage;
         
         if (totalPages <= maxVisiblePages) {
           // Se tiver menos páginas que o máximo, mostra todas

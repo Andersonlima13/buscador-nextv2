@@ -39,6 +39,61 @@ export const fetchStudentByMatricula = async (matricula: string): Promise<Studen
 
 
 
+export const handleDownloadStudents = async () => {
+  try {
+    const response = await apiClient.get('/alunos');
+    const data = response.data;
+
+    // Converter JSON para CSV
+    const csvContent = convertJsonToCsv(data);
+
+    // Cria um blob com o CSV
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;'
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'alunos_export.csv'; // Extensão alterada para .csv
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+  } catch (error) {
+    console.error('Erro ao exportar alunos:', error);
+    throw new Error('Falha ao exportar dados dos alunos');
+  }
+};
+
+// Função auxiliar para converter JSON para CSV
+function convertJsonToCsv(data: any[]): string {
+  if (data.length === 0) return '';
+
+  // Extrai os cabeçalhos (nomes das colunas)
+  const headers = Object.keys(data[0]);
+  
+  // Cria as linhas do CSV
+  const csvRows = [
+    headers.join(','), // Cabeçalhos
+    ...data.map(row => 
+      headers.map(fieldName => {
+        // Trata valores que podem conter vírgulas ou aspas
+        let value = row[fieldName] === null || row[fieldName] === undefined ? '' : row[fieldName];
+        if (typeof value === 'string') {
+          value = value.replace(/"/g, '""'); // Escapa aspas
+          if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+            value = `"${value}"`;
+          }
+        }
+        return value;
+      }).join(',')
+    )
+  ];
+
+  return csvRows.join('\n');
+}
 
 
 
