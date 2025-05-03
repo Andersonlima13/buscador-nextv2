@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { FiChevronLeft } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
-import { FiSearch, FiPlus , FiDownload, FiUpload} from 'react-icons/fi'
+import { FiSearch, FiPlus , FiDownload, FiUpload , FiCreditCard} from 'react-icons/fi'
 import { handleDownloadStudents } from '../lib/api/services/studentService'
 import Link from 'next/link'
 
@@ -263,12 +263,18 @@ const handleDownloadClick = async () => {
   return (
     <TableWrapper>
       <TableHeader>         
-      <Title>
-       {title}
-      </Title>
+      
+
+      <DataContainer>
+      <FiCreditCard size={24} style={{ marginRight: '10px' }} />
+      Importar Cards
+    </DataContainer>
+
+
+
       <DataContainer onClick={handleDownloadClick}>
   <FiDownload size={24} style={{ marginRight: '10px' }} />
-  {isDownloading ? 'Gerando arquivo...' : 'Download de alunos'}
+  {isDownloading ? 'Gerando arquivo...' : 'Download de alunos (CSV)'}
 </DataContainer>
 
     <DataContainer>
@@ -278,7 +284,7 @@ const handleDownloadClick = async () => {
 
     <DataContainer>
       <FiUpload size={24} style={{ marginRight: '10px' }} />
-      Upload de alunos
+      Upload de planilha
     </DataContainer>
       
 
