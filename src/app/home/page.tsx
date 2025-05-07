@@ -7,11 +7,11 @@ import { fetchStudents } from '../lib/api/services/studentService';
 import { Student } from "../lib/types/student";
 import Navbar from "../components/Navbar";
 
-
 export default function Home() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -33,6 +33,7 @@ export default function Home() {
     <div style={{ display: 'flex', minHeight: '100vh', background: '#6f85a8' }}>
       <Navbar />
       <SidebarComponent />
+
       
       <div style={{ 
         flex: 1, 
@@ -57,6 +58,11 @@ export default function Home() {
             ]}
           />
         )}
+        
+  
+
+
+
       </div>
     </div>
   );

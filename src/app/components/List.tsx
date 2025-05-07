@@ -9,6 +9,7 @@ import { FiChevronRight } from 'react-icons/fi'
 import { FiSearch, FiPlus , FiDownload, FiUpload , FiCreditCard} from 'react-icons/fi'
 import { handleDownloadStudents } from '../lib/api/services/studentService'
 import Link from 'next/link'
+import Modal from './Modal'
 
 
 // Tipagem genérica
@@ -65,17 +66,7 @@ const TableHeader = styled.div`
   }
 `
 
-const Title = styled.h2`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  text-shadow: 1px 1px 1px black;
-  font-size: 22px;
-  font-weight: normal;
-  color: #374151;
-  margin: 0;
-  padding: 1;
-`
+
 
 const SearchBox = styled.div`
 
@@ -257,36 +248,68 @@ const handleDownloadClick = async () => {
   }
 };
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
 
 
 
   return (
     <TableWrapper>
-      <TableHeader>         
-      
-
+    <TableHeader>         
       <DataContainer>
-      <FiCreditCard size={24} style={{ marginRight: '10px' }} />
-      Importar Cards
-    </DataContainer>
-
-
+        <FiCreditCard size={24} style={{ marginRight: '10px' }} />
+        Importar Cards
+      </DataContainer>
 
       <DataContainer onClick={handleDownloadClick}>
-  <FiDownload size={24} style={{ marginRight: '10px' }} />
-  {isDownloading ? 'Gerando arquivo...' : 'Download de alunos (CSV)'}
-</DataContainer>
+        <FiDownload size={24} style={{ marginRight: '10px' }} />
+        {isDownloading ? 'Gerando arquivo...' : 'Download de alunos (CSV)'}
+      </DataContainer>
 
-    <DataContainer>
-      <FiPlus size={24} style={{ marginRight: '10px' }} />
-     Adcionar Aluno
-    </DataContainer>
-
-    <DataContainer>
-      <FiUpload size={24} style={{ marginRight: '10px' }} />
-      Upload de planilha
-    </DataContainer>
+      <DataContainer>
+        <FiPlus size={24} style={{ marginRight: '10px' }} />
+        Adicionar Aluno
+      </DataContainer>
       
+      <DataContainer onClick={() => setIsModalOpen(true)}>
+        <FiUpload size={24} style={{ marginRight: '10px' }} />
+        Upload de planilha
+      </DataContainer>
+      
+      <Modal 
+  isOpen={isModalOpen}
+  onClose={() => {
+    setIsModalOpen(false);
+    setSelectedFile(null);
+  }}
+  title="Upload de Planilha"
+>
+  <div>
+    <h4>Faça upload da planilha</h4>
+    <p>Selecione o arquivo Excel ou CSV para importar os alunos.</p>
+    <input 
+      type="file" 
+      accept=".csv, .xlsx, .xls" 
+      onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+    />
+    {selectedFile && (
+      <p>Arquivo selecionado: {selectedFile.name}</p>
+    )}
+    <button 
+      onClick={() => {
+        if (selectedFile) {
+          alert(`Enviando ${selectedFile.name}...`);
+          // Aqui você chamaria sua API para upload
+        } else {
+          alert('Selecione um arquivo primeiro!');
+        }
+      }}
+    >
+      Enviar Planilha
+    </button>
+  </div>
+</Modal>
 
  
         
