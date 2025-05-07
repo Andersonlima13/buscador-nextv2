@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { FiChevronLeft } from 'react-icons/fi'
+import { FiChevronLeft, FiSend } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
 import { FiSearch, FiPlus , FiDownload, FiUpload , FiCreditCard} from 'react-icons/fi'
 import { handleDownloadStudents } from '../lib/api/services/studentService'
@@ -199,7 +199,29 @@ const DataContainer = styled.div`
   
 `;
 
+const FileInputContainer = styled.label`
+  display: inline-block;
+  cursor: pointer;
+  
+  /* Esconde o input original */
+  input[type="file"] {
+    display: none;
+  }
+`;
 
+// Componente que usa o estilo
+const FileUploadButton = styled(DataContainer)`
+  /* Pode adicionar estilos específicos se necessário */
+  &:hover {
+    background-color: #e0e0e0;
+  }
+`;
+
+const Modalcontent = styled.div`
+  justify-content:space-between;
+  display:flex;
+  align-items:center;
+`
 
 
 
@@ -254,6 +276,10 @@ const handleDownloadClick = async () => {
 
 
 
+  function handleUpload(selectedFile: File): void {
+    throw new Error('Function not implemented.')
+  }
+
   return (
     <TableWrapper>
     <TableHeader>         
@@ -273,8 +299,9 @@ const handleDownloadClick = async () => {
       </DataContainer>
       
       <DataContainer onClick={() => setIsModalOpen(true)}>
-        <FiUpload size={24} style={{ marginRight: '10px' }} />
-        Upload de planilha
+        
+        <FiUpload size={24} />
+        Upload de planilha 
       </DataContainer>
       
       <Modal 
@@ -285,30 +312,48 @@ const handleDownloadClick = async () => {
   }}
   title="Upload de Planilha"
 >
-  <div>
-    <h4>Faça upload da planilha</h4>
-    <p>Selecione o arquivo Excel ou CSV para importar os alunos.</p>
-    <input 
-      type="file" 
-      accept=".csv, .xlsx, .xls" 
-      onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-    />
-    {selectedFile && (
-      <p>Arquivo selecionado: {selectedFile.name}</p>
-    )}
-    <button 
-      onClick={() => {
-        if (selectedFile) {
-          alert(`Enviando ${selectedFile.name}...`);
-          // Aqui você chamaria sua API para upload
-        } else {
-          alert('Selecione um arquivo primeiro!');
-        }
-      }}
-    >
-      Enviar Planilha
-    </button>
-  </div>
+<Modalcontent>
+
+<DataContainer  
+  onClick={() => selectedFile && handleUpload(selectedFile)}
+ 
+>
+  <FiDownload size={20} style={{ marginRight: '10px' }} />
+  Modelo de planilha
+</DataContainer>
+
+
+
+
+
+
+  <FileInputContainer>
+    <FileUploadButton>
+      <FiUpload size={20} style={{ marginRight: '8px' }} />
+      Escolher arquivo
+      <input
+        type="file"
+        accept=".csv, .xlsx, .xls"
+        onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+      />
+    </FileUploadButton>
+  </FileInputContainer>
+
+  
+
+  <DataContainer 
+  onClick={() => selectedFile && handleUpload(selectedFile)}
+  aria-disabled={!selectedFile}
+  style={{
+    opacity: selectedFile ? 1 : 0.6,
+    cursor: selectedFile ? 'pointer' : 'not-allowed',
+    pointerEvents: !selectedFile ? 'none' : 'auto'
+  }}
+>
+  <FiSend size={20} style={{ marginRight: '10px' }} />
+  Enviar Planilha
+</DataContainer>
+</Modalcontent>
 </Modal>
 
  
