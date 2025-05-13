@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { FiChevronLeft, FiSend } from 'react-icons/fi'
 import { FiChevronRight } from 'react-icons/fi'
 import { FiSearch, FiPlus , FiDownload, FiUpload , FiCreditCard} from 'react-icons/fi'
-import { handleDownloadStudents } from '../lib/api/services/studentService'
+import { handleDownloadStudents,fetchStudents,uploadStudentSpreadsheet,downloadSpreadsheetTemplate } from '../lib/api/services/studentService'
 import Link from 'next/link'
 import Modal from './Modal'
 
@@ -269,16 +269,47 @@ const handleDownloadClick = async () => {
     setIsDownloading(false);
   }
 };
+
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
 
 
 
-  function handleUpload(selectedFile: File): void {
-    throw new Error('Function not implemented.')
-  }
+
+
+  const handleUpload = async (file: File) => {
+    setIsUploading(true);
+    try {
+      // ... upload logic
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleDownloadTemplate = async () => {
+    setIsDownloading(true);
+    try {
+      await downloadSpreadsheetTemplate();
+    } catch (error) {
+      console.error('Erro ao baixar modelo:', error);
+      alert('Erro ao baixar modelo');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+
+
+
+
+
+
+
+
+
 
   return (
     <TableWrapper>
@@ -305,21 +336,18 @@ const handleDownloadClick = async () => {
       </DataContainer>
       
       <Modal 
-  isOpen={isModalOpen}
-  onClose={() => {
-    setIsModalOpen(false);
-    setSelectedFile(null);
-  }}
-  title="Upload de Planilha"
->
+      isOpen={isModalOpen}
+      onClose={() => {
+      setIsModalOpen(false);
+      setSelectedFile(null);
+      }}
+      title="Upload de Planilha"
+      >
 <Modalcontent>
 
-<DataContainer  
-  onClick={() => selectedFile && handleUpload(selectedFile)}
- 
->
+<DataContainer onClick={handleDownloadTemplate}>
   <FiDownload size={20} style={{ marginRight: '10px' }} />
-  Modelo de planilha
+  {isDownloading ? 'Gerando arquivo...' : 'Modelo De Planilha'}
 </DataContainer>
 
 
@@ -340,7 +368,6 @@ const handleDownloadClick = async () => {
   </FileInputContainer>
 
   
-
   <DataContainer 
   onClick={() => selectedFile && handleUpload(selectedFile)}
   aria-disabled={!selectedFile}

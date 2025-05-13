@@ -20,6 +20,7 @@ export const fetchStudents = async (): Promise<Student[]> => {
     throw new Error('Falha ao carregar alunos')         // ao inves de apenas um erro no console
   }
 }
+
 /// funcao para busca indiviudal de um aluno , deve fazer o fetch dos dados do card
 // src/app/lib/api/services/studentService.ts
 export const fetchStudentByMatricula = async (matricula: string): Promise<Student> => {
@@ -38,10 +39,11 @@ export const fetchStudentByMatricula = async (matricula: string): Promise<Studen
 
 
 
+// funcao de download dos arquivos via csv
 
 export const handleDownloadStudents = async () => {
   try {
-    const response = await apiClient.get('/alunos');
+    const response = await apiClient.get('/alunos');   // faz o get dos dados em /alunos e transforma em csv
     const data = response.data;
 
     // Converter JSON para CSV
@@ -94,6 +96,57 @@ function convertJsonToCsv(data: any[]): string {
 
   return csvRows.join('\n');
 }
+
+
+
+// upload da planilha de alunos 
+
+export const uploadStudentSpreadsheet = async (file: File): Promise<void> => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await apiClient.post('/alunos/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao enviar planilha:', error);
+    throw new Error('Falha ao enviar planilha');
+  }
+};
+
+
+
+
+// modelo de planilha
+export const downloadSpreadsheetTemplate = async (): Promise<void> => {
+  try {
+    const response = await apiClient.get('/home/download-modelo', {
+      responseType: 'blob' // Importante para arquivos binários
+    });
+
+    // Criar link temporário para download
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'modelo_alunos.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    
+    // Limpeza
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error('Erro ao baixar modelo:', error);
+    throw new Error('Falha ao baixar modelo');
+  }
+};
+
+
+
 
 
 
