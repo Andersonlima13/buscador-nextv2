@@ -300,7 +300,7 @@ const handleDownloadClick = async () => {
       
       <DataContainer onClick={() => setIsModalOpen(true)}>
         
-        <FiUpload size={24} />
+        <FiUpload size={24} style={{ marginRight: '10px' }}/>
         Upload de planilha 
       </DataContainer>
       
