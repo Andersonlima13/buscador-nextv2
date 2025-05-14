@@ -30,16 +30,25 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#6f85a8' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'purple' , backgroundImage: `linear-gradient(rgba(128, 0, 128, 0.7), rgba(128, 0, 128, 0.7)), url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1920&q=80')`
+ }}>
       <Navbar />
       <SidebarComponent />
 
       
       <div style={{ 
-        flex: 1, 
+      flex: 1, 
         marginLeft: '242px', // Ajuste conforme a largura da sua sidebar
         padding: '20px',
-        marginTop: '60px' // Ajuste conforme a altura da sua navbar
+        marginTop: '60px', // Ajuste conforme a altura da sua navbar
+
+       minHeight: '100vh',
+       backgroundSize: 'cover',
+       backgroundRepeat: 'no-repeat',
+       
+
+
+
       }}>
         {loading ? (
           <p>Carregando alunos...</p>

@@ -29,7 +29,7 @@ export default function Sidebar_component() {
     <div style={{
       width: '250px',
       height: '100vh',
-      background: '#DDE6F0',
+      background: '#fffff',
       position: 'fixed', // Alterado para fixed
       top: 0, // Fixa no topo
       left: 0, // Fixa na esquerda
@@ -55,14 +55,14 @@ export default function Sidebar_component() {
               if (level === 0) {
                 return {
                   color: '#374151',
-                  backgroundColor: active ? '#00000' : 'transparent',
+                  backgroundColor: active ? 'transparent' : 'transparent',
                   fontWeight: 'bold',
                   fontSize: '16px',
                   fontFamily: 'Arial, sans-serif',
                   margin: 0, // Adicionado
                   padding: '10px 20px', // Controle explícito
                   '&:hover': {
-                    backgroundColor: '#00000',
+                    backgroundColor: '#fffff' ,
                   },
                 };
               }
@@ -70,14 +70,14 @@ export default function Sidebar_component() {
               if (level === 1) {
                 return {
                   color: '#374151',
-                  backgroundColor: active ? '#00000' : 'transparent',
+                  backgroundColor: active ? 'transparent' : 'transparent',
 
                   fontSize: '14px',
                   fontFamily: 'Arial, sans-serif',
                   margin: 0, // Adicionado
                   padding: '8px 20px 8px 30px', // Padding com indentação
                   '&:hover': {
-                    backgroundColor: '#C4D6E5',
+                    backgroundColor: '#fffff',
                   },
                 };
               }

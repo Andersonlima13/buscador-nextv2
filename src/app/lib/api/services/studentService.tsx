@@ -169,4 +169,3 @@ export const updateStudent = async (id: string, data: Partial<Student>) => {
 
 
 
-
