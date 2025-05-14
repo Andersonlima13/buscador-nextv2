@@ -318,7 +318,7 @@ const handleDownloadClick = async () => {
 
       <DataContainer onClick={handleDownloadClick}>
         <FiDownload size={24} style={{ marginRight: '10px' }} />
-        {isDownloading ? 'Gerando arquivo...' : 'Download de alunos (CSV)'}
+        {isDownloading ? 'Gerando arquivo...' : 'Importar planilha'}
       </DataContainer>
 
       <DataContainer>
@@ -328,8 +328,8 @@ const handleDownloadClick = async () => {
       
       <DataContainer onClick={() => setIsModalOpen(true)}>
         
-        <FiUpload size={24} />
-        Upload de planilha 
+        <FiUpload size={24} style={{ marginRight: '10px',}} />
+        Exportar alunos
       </DataContainer>
       
       <Modal 

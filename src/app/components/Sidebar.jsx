@@ -5,7 +5,9 @@ import React from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import Link from "next/link";
 import styled from "styled-components";
-import { FiSearch,FiPlus,FiSettings } from 'react-icons/fi'
+import { FiSearch,FiPlus,FiSettings} from 'react-icons/fi'
+import { PiStudent,PiChat, PiCalendar } from "react-icons/pi";
+import { TbAlertSquare } from "react-icons/tb";
 
 
 
@@ -127,10 +129,75 @@ export default function Sidebar_component() {
       <FiSettings  style={{ marginLeft: 'auto' }} />
     </div>
   </MenuItem>
-
-
-
         </SubMenu>
+
+       
+  <MenuItem>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/groups" passHref>
+        <StyledLinkText>Turmas</StyledLinkText>
+      </Link>
+      <PiStudent  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+
+  <MenuItem>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/messages" passHref>
+        <StyledLinkText>Conversas</StyledLinkText>
+      </Link>
+      <PiChat  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+
+
+  <MenuItem>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/comunication" passHref>
+        <StyledLinkText>Comunicados</StyledLinkText>
+      </Link>
+      <TbAlertSquare  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+
+  <MenuItem>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/calendar" passHref>
+        <StyledLinkText>Agenda</StyledLinkText>
+      </Link>
+      <PiCalendar  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+  
+  
+
+
+
+
   
       
       </Menu>
