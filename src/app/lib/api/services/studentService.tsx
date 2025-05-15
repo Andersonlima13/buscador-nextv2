@@ -106,18 +106,29 @@ export const uploadStudentSpreadsheet = async (file: File): Promise<void> => {
   formData.append('file', file);
 
   try {
-    const response = await apiClient.post('/alunos/upload', formData, {
+    const response = await apiClient.post('/home/upload', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        // Adicione headers de autenticação se necessário
+        // 'Authorization': `Bearer ${token}`
       }
     });
     return response.data;
-  } catch (error) {
-    console.error('Erro ao enviar planilha:', error);
-    throw new Error('Falha ao enviar planilha');
+  } catch (error: any) {
+    // Tratamento específico de erros
+    let errorMessage = 'Falha ao enviar planilha';
+    
+    if (error.response) {
+      if (error.response.status === 413) {
+        errorMessage = 'Arquivo muito grande';
+      } else if (error.response.data?.includes('duplicada')) {
+        errorMessage = 'Matrícula duplicada encontrada';
+      }
+    }
+    
+    throw new Error(errorMessage);
   }
 };
-
 
 
 

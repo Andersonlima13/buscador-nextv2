@@ -271,6 +271,8 @@ const handleDownloadClick = async () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
 
 
@@ -278,9 +280,35 @@ const handleDownloadClick = async () => {
 
 
   const handleUpload = async (file: File) => {
+    const validExtensions = ['.xlsx', '.xls', '.csv'];
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+  
+    // Validações do arquivo
+    if (!fileExtension || !validExtensions.includes(`.${fileExtension}`)) {
+      setUploadError('Por favor, envie um arquivo .xlsx, .xls ou .csv');
+      return;
+    }
+  
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('O arquivo é muito grande (máximo 5MB)');
+      return;
+    }
+  
     setIsUploading(true);
+    setUploadError(null);
+  
     try {
-      // ... upload logic
+      await uploadStudentSpreadsheet(file);
+      setUploadSuccess(true);
+      
+      // Atualize a lista de alunos se necessário
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setUploadSuccess(false);
+      }, 2000);
+      
+    } catch (error: any) {
+      setUploadError(error.message || 'Erro ao enviar planilha');
     } finally {
       setIsUploading(false);
     }
