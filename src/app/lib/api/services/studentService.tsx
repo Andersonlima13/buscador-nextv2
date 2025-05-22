@@ -99,25 +99,6 @@ function convertJsonToCsv(data: any[]): string {
 
 
 
-// upload da planilha de alunos 
-
-export const uploadStudentSpreadsheet = async (file: File): Promise<void> => {
-  const formData = new FormData();
-  formData.append('file', file);
-
-  try {
-    const response = await apiClient.post('/alunos/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao enviar planilha:', error);
-    throw new Error('Falha ao enviar planilha');
-  }
-};
-
 
 
 
@@ -144,6 +125,30 @@ export const downloadSpreadsheetTemplate = async (): Promise<void> => {
     throw new Error('Falha ao baixar modelo');
   }
 };
+
+
+/// upload de alunos via planilha 
+
+export const uploadStudentSpreadsheet = async (file: File): Promise<void> => {
+  const formData = new FormData();
+  formData.append('file', file); // 'file' deve bater com o nome esperado no multer (upload.single('file'))
+
+  try {
+    const response = await apiClient.post('/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        // Adicione aqui headers de autenticação se necessário
+      }
+    });
+
+    return response.data;
+  } catch (error:any) {
+    console.error('Erro no upload:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Falha ao enviar planilha');
+  }
+};
+
+
 
 
 

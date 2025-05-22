@@ -10,7 +10,7 @@ import { FiSearch, FiPlus , FiDownload, FiUpload , FiCreditCard} from 'react-ico
 import { handleDownloadStudents,fetchStudents,uploadStudentSpreadsheet,downloadSpreadsheetTemplate } from '../lib/api/services/studentService'
 import Link from 'next/link'
 import Modal from './Modal'
-
+import { Student } from '../lib/types/student'
 
 // Tipagem genérica
 type TableColumn<T> = {
@@ -274,20 +274,47 @@ const handleDownloadClick = async () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-
-
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [students, setStudents] = useState<Student[]>([]);
 
 
 
 
   const handleUpload = async (file: File) => {
+
+    const validExtensions = ['.xlsx', '.xls', '.csv'];
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+  
+  if (!fileExtension || !validExtensions.includes(`.${fileExtension}`)) {
+    setUploadError('Por favor, envie um arquivo .xlsx, .xls ou .csv');
+    return;
+  }
+
+  // Validação de tamanho (exemplo: 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    setUploadError('O arquivo é muito grande (máximo 5MB)');
+    return;
+  }
     setIsUploading(true);
+    setUploadError(null);
+    
     try {
-      // ... upload logic
+      await uploadStudentSpreadsheet(file);
+      setUploadSuccess(true);
+      // Atualizar lista de alunos após upload bem-sucedido
+      const updatedStudents = await fetchStudents();
+      setStudents(updatedStudents);
+      // Fechar modal após 2 segundos
+      setTimeout(() => setIsModalOpen(false), 2000);
+    } catch (error:any) {
+      setUploadError(error.message);
     } finally {
       setIsUploading(false);
     }
   };
+
+
 
   const handleDownloadTemplate = async () => {
     setIsDownloading(true);
@@ -340,47 +367,61 @@ const handleDownloadClick = async () => {
       onClose={() => {
       setIsModalOpen(false);
       setSelectedFile(null);
+      setUploadSuccess(false);
+      setUploadError(null);
       }}
       title="Upload de Planilha"
       >
+
 <Modalcontent>
+  <DataContainer onClick={handleDownloadTemplate}>
+    <FiDownload size={20} style={{ marginRight: '10px' }} />
+    {isDownloading ? 'Gerando arquivo...' : 'Modelo De Planilha'}
+  </DataContainer>
 
-<DataContainer onClick={handleDownloadTemplate}>
-  <FiDownload size={20} style={{ marginRight: '10px' }} />
-  {isDownloading ? 'Gerando arquivo...' : 'Modelo De Planilha'}
-</DataContainer>
+  {uploadSuccess ? (
+    <div style={{ color: 'green' }}>
+      ✅ Planilha enviada com sucesso!
+    </div>
+  ) : (
+    <>
+      <FileInputContainer>
+        <FileUploadButton>
+          <FiUpload size={20} style={{ marginRight: '8px' }} />
+          {selectedFile ? selectedFile.name : 'Escolher arquivo'}
+          <input
+            type="file"
+            accept=".csv, .xlsx, .xls"
+            onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+            style={{ display: 'none' }}
+          />
+        </FileUploadButton>
+      </FileInputContainer>
 
+      {uploadError && (
+        <div style={{ color: 'red', marginTop: '10px' }}>
+          ❌ {uploadError}
+        </div>
+      )}
 
-
-
-
-
-  <FileInputContainer>
-    <FileUploadButton>
-      <FiUpload size={20} style={{ marginRight: '8px' }} />
-      Escolher arquivo
-      <input
-        type="file"
-        accept=".csv, .xlsx, .xls"
-        onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-      />
-    </FileUploadButton>
-  </FileInputContainer>
-
-  
-  <DataContainer 
-  onClick={() => selectedFile && handleUpload(selectedFile)}
-  aria-disabled={!selectedFile}
-  style={{
-    opacity: selectedFile ? 1 : 0.6,
-    cursor: selectedFile ? 'pointer' : 'not-allowed',
-    pointerEvents: !selectedFile ? 'none' : 'auto'
-  }}
->
-  <FiSend size={20} style={{ marginRight: '10px' }} />
-  Enviar Planilha
-</DataContainer>
+      <DataContainer 
+        onClick={() => selectedFile && handleUpload(selectedFile)}
+        aria-disabled={!selectedFile}
+        style={{
+          opacity: selectedFile ? 1 : 0.6,
+          cursor: selectedFile ? 'pointer' : 'not-allowed',
+          pointerEvents: !selectedFile ? 'none' : 'auto',
+          marginTop: '10px'
+        }}
+      >
+        <FiSend size={20} style={{ marginRight: '10px' }} />
+        Enviar Planilha
+      </DataContainer>
+    </>
+  )}
 </Modalcontent>
+
+
 </Modal>
 
  
