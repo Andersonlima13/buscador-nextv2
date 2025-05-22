@@ -100,6 +100,37 @@ function convertJsonToCsv(data: any[]): string {
 
 
 
+// upload da planilha de alunos 
+
+export const uploadStudentSpreadsheet = async (file: File): Promise<void> => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await apiClient.post('/home/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        // Adicione headers de autenticação se necessário
+        // 'Authorization': `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error: any) {
+    // Tratamento específico de erros
+    let errorMessage = 'Falha ao enviar planilha';
+    
+    if (error.response) {
+      if (error.response.status === 413) {
+        errorMessage = 'Arquivo muito grande';
+      } else if (error.response.data?.includes('duplicada')) {
+        errorMessage = 'Matrícula duplicada encontrada';
+      }
+    }
+    
+    throw new Error(errorMessage);
+  }
+};
+
 
 
 // modelo de planilha
@@ -127,30 +158,6 @@ export const downloadSpreadsheetTemplate = async (): Promise<void> => {
 };
 
 
-/// upload de alunos via planilha 
-
-export const uploadStudentSpreadsheet = async (file: File): Promise<void> => {
-  const formData = new FormData();
-  formData.append('file', file); // 'file' deve bater com o nome esperado no multer (upload.single('file'))
-
-  try {
-    const response = await apiClient.post('/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        // Adicione aqui headers de autenticação se necessário
-      }
-    });
-
-    return response.data;
-  } catch (error:any) {
-    console.error('Erro no upload:', error.response?.data || error.message);
-    throw new Error(error.response?.data?.message || 'Falha ao enviar planilha');
-  }
-};
-
-
-
-
 
 
 
@@ -170,7 +177,6 @@ export const updateStudent = async (id: string, data: Partial<Student>) => {
   const response = await apiClient.patch(`/students/${id}`, data)
   return response.data
 }
-
 
 
 

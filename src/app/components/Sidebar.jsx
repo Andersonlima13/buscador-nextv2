@@ -5,7 +5,9 @@ import React from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import Link from "next/link";
 import styled from "styled-components";
-import { FiSearch,FiPlus,FiSettings } from 'react-icons/fi'
+import { FiSearch,FiPlus,FiSettings} from 'react-icons/fi'
+import { PiStudent,PiChat, PiCalendar } from "react-icons/pi";
+import { TbAlertSquare } from "react-icons/tb";
 
 
 
@@ -29,7 +31,7 @@ export default function Sidebar_component() {
     <div style={{
       width: '250px',
       height: '100vh',
-      background: '#DDE6F0',
+      background: '#fffff',
       position: 'fixed', // Alterado para fixed
       top: 0, // Fixa no topo
       left: 0, // Fixa na esquerda
@@ -55,14 +57,14 @@ export default function Sidebar_component() {
               if (level === 0) {
                 return {
                   color: '#374151',
-                  backgroundColor: active ? '#00000' : 'transparent',
+                  backgroundColor: active ? 'transparent' : 'transparent',
                   fontWeight: 'bold',
                   fontSize: '16px',
                   fontFamily: 'Arial, sans-serif',
                   margin: 0, // Adicionado
                   padding: '10px 20px', // Controle explícito
                   '&:hover': {
-                    backgroundColor: '#00000',
+                    backgroundColor: '#fffff' ,
                   },
                 };
               }
@@ -70,14 +72,14 @@ export default function Sidebar_component() {
               if (level === 1) {
                 return {
                   color: '#374151',
-                  backgroundColor: active ? '#00000' : 'transparent',
+                  backgroundColor: active ? 'transparent' : 'transparent',
 
                   fontSize: '14px',
                   fontFamily: 'Arial, sans-serif',
                   margin: 0, // Adicionado
                   padding: '8px 20px 8px 30px', // Padding com indentação
                   '&:hover': {
-                    backgroundColor: '#C4D6E5',
+                    backgroundColor: '#fffff',
                   },
                 };
               }
@@ -127,10 +129,75 @@ export default function Sidebar_component() {
       <FiSettings  style={{ marginLeft: 'auto' }} />
     </div>
   </MenuItem>
-
-
-
         </SubMenu>
+
+       
+  <MenuItem>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/groups" passHref>
+        <StyledLinkText>Turmas</StyledLinkText>
+      </Link>
+      <PiStudent  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+
+  <MenuItem>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/messages" passHref>
+        <StyledLinkText>Conversas</StyledLinkText>
+      </Link>
+      <PiChat  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+
+
+  <MenuItem>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/comunication" passHref>
+        <StyledLinkText>Comunicados</StyledLinkText>
+      </Link>
+      <TbAlertSquare  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+
+  <MenuItem>
+  <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingRight: '10px'
+    }}>
+      <Link href="/calendar" passHref>
+        <StyledLinkText>Agenda</StyledLinkText>
+      </Link>
+      <PiCalendar  style={{ marginLeft: 'auto' }} />
+    </div>
+  </MenuItem>
+  
+  
+
+
+
+
   
       
       </Menu>

@@ -12,8 +12,7 @@ const StyledLinkText = styled.a`
   text-decoration: none;
   font-weight: normal;
   &:hover {
-    text-decoration: none;
-    color: #3a6d99;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
   }
 `;
 
@@ -23,7 +22,7 @@ const NavContainer = styled.nav`
   left: 0;
   width: 100%;
   height: 60px;
-  background: #374151;
+  background: #1e0f26;
   display: flex;
   align-items: center;
   padding: 0 20px;

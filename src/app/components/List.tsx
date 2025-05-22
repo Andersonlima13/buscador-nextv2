@@ -45,7 +45,7 @@ const StudentNameLink = styled.div` // Mudamos de 'a' para 'div'
 `;
 // Componentes estilizados
 const TableWrapper = styled.div`
-background-color:#F9FAFB;
+background-color:#1e0f26;
 border-radius: 8px;
   box-shadow: 0 0 1px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.05);
   padding: 24px;
@@ -102,7 +102,7 @@ const SearchIcon = styled.span`
 `
 
 const Table = styled.table`
-  background-color:#6F85A8;
+  background-color:#1e0f26;
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 16px;
@@ -110,7 +110,7 @@ const Table = styled.table`
 
 const TableHead = styled.thead`
 color:white;
-background-color:#374151;
+background-color:black ;
 
 `
 
@@ -174,29 +174,26 @@ const PaginationButton = styled.button<{ active?: boolean; disabled?: boolean }>
   }
 `
 const DataContainer = styled.div`
-
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.1); /* Fundo transparente */
-  backdrop-filter: blur(5px); /* Efeito de vidro fosco */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #374151;
+  backdrop-filter: blur(10px); /* Efeito vidro fosco */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Borda branca suave */
+  color: white;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra escura para profundidade */
 
-  /* Efeito de hover sutil */
+  /* Hover */
   &:hover {
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
     transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(128, 0, 128, 0.25); /* Intensifica o roxo translúcido */
   }
-
-  
 `;
 
 const FileInputContainer = styled.label`
@@ -239,7 +236,7 @@ export function List<T extends { id: number | string }>({
   useEffect(() => {
     setFilteredData(data)
   }, [data])
-
+}
   useEffect(() => {
     const filtered = data.filter(item =>
       columns.some(column => {
@@ -281,6 +278,9 @@ const handleDownloadClick = async () => {
 
 
 
+
+
+
   const handleUpload = async (file: File) => {
 
     const validExtensions = ['.xlsx', '.xls', '.csv'];
@@ -309,6 +309,35 @@ const handleDownloadClick = async () => {
       setTimeout(() => setIsModalOpen(false), 2000);
     } catch (error:any) {
       setUploadError(error.message);
+    const validExtensions = ['.xlsx', '.xls', '.csv'];
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+  
+    // Validações do arquivo
+    if (!fileExtension || !validExtensions.includes(`.${fileExtension}`)) {
+      setUploadError('Por favor, envie um arquivo .xlsx, .xls ou .csv');
+      return;
+    }
+  
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('O arquivo é muito grande (máximo 5MB)');
+      return;
+    }
+  
+    setIsUploading(true);
+    setUploadError(null);
+  
+    try {
+      await uploadStudentSpreadsheet(file);
+      setUploadSuccess(true);
+      
+      // Atualize a lista de alunos se necessário
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setUploadSuccess(false);
+      }, 2000);
+      
+    } catch (error: any) {
+      setUploadError(error.message || 'Erro ao enviar planilha');
     } finally {
       setIsUploading(false);
     }
@@ -348,7 +377,7 @@ const handleDownloadClick = async () => {
 
       <DataContainer onClick={handleDownloadClick}>
         <FiDownload size={24} style={{ marginRight: '10px' }} />
-        {isDownloading ? 'Gerando arquivo...' : 'Download de alunos (CSV)'}
+        {isDownloading ? 'Gerando arquivo...' : 'Importar planilha'}
       </DataContainer>
 
       <DataContainer>
@@ -358,8 +387,8 @@ const handleDownloadClick = async () => {
       
       <DataContainer onClick={() => setIsModalOpen(true)}>
         
-        <FiUpload size={24} />
-        Upload de planilha 
+        <FiUpload size={24} style={{ marginRight: '10px',}} />
+        Exportar alunos
       </DataContainer>
       
       <Modal 
@@ -542,5 +571,4 @@ const handleDownloadClick = async () => {
   </PaginationContainer>
 )}
     </TableWrapper>
-  )
-}
+  )}
