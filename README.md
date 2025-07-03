@@ -3,8 +3,10 @@
 # Updates 
 
 
-Interface mais intuitiva.
-Login para alunos consultarem seu proprio acesso via google.
-Permitir CRUD completo de alunos por usuarios ADM.
-Exportaçao de pdfs.
-Guia de plataformas.
+<p>Interface mais intuitiva. <p/>
+<p>Login para alunos consultarem seu proprio acesso via google. <p/>
+<p>Permitir CRUD completo de alunos por usuarios ADM. <p/>
+<p>Exportaçao de pdfs <p/>
+<p>Guia de plataformas<p/>
+
+
