@@ -232,11 +232,18 @@ export function List<T extends { id: number | string }>({
   const [filteredData, setFilteredData] = useState<T[]>(data)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
+  const [isDownloading, setIsDownloading] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
+  const [uploadSuccess, setUploadSuccess] = useState(false)
+  const [students, setStudents] = useState<Student[]>([])
 
   useEffect(() => {
     setFilteredData(data)
   }, [data])
-}
+
   useEffect(() => {
     const filtered = data.filter(item =>
       columns.some(column => {
@@ -253,109 +260,61 @@ export function List<T extends { id: number | string }>({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem)
   const totalPages = Math.ceil(filteredData.length / itemsPerPage)
-  const [isDownloading, setIsDownloading] = useState(false);
 
-const handleDownloadClick = async () => {
-  setIsDownloading(true);
-  try {
-    await handleDownloadStudents();
-  } catch (error) {
-    console.error("Falha no download:", error);
-    // Adicione aqui seu tratamento de erro (toast, alert, etc)
-  } finally {
-    setIsDownloading(false);
+  const handleDownloadClick = async () => {
+    setIsDownloading(true)
+    try {
+      await handleDownloadStudents()
+    } catch (error) {
+      console.error("Falha no download:", error)
+    } finally {
+      setIsDownloading(false)
+    }
   }
-};
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [students, setStudents] = useState<Student[]>([]);
-
-
-
-
-
-
 
   const handleUpload = async (file: File) => {
-
-    const validExtensions = ['.xlsx', '.xls', '.csv'];
-    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    const validExtensions = ['.xlsx', '.xls', '.csv']
+    const fileExtension = file.name.split('.').pop()?.toLowerCase()
   
-  if (!fileExtension || !validExtensions.includes(`.${fileExtension}`)) {
-    setUploadError('Por favor, envie um arquivo .xlsx, .xls ou .csv');
-    return;
-  }
+    if (!fileExtension || !validExtensions.includes(`.${fileExtension}`)) {
+      setUploadError('Por favor, envie um arquivo .xlsx, .xls ou .csv')
+      return
+    }
 
-  // Validação de tamanho (exemplo: 5MB)
-  if (file.size > 5 * 1024 * 1024) {
-    setUploadError('O arquivo é muito grande (máximo 5MB)');
-    return;
-  }
-    setIsUploading(true);
-    setUploadError(null);
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('O arquivo é muito grande (máximo 5MB)')
+      return
+    }
+
+    setIsUploading(true)
+    setUploadError(null)
     
     try {
-      await uploadStudentSpreadsheet(file);
-      setUploadSuccess(true);
-      // Atualizar lista de alunos após upload bem-sucedido
-      const updatedStudents = await fetchStudents();
-      setStudents(updatedStudents);
-      // Fechar modal após 2 segundos
-      setTimeout(() => setIsModalOpen(false), 2000);
-    } catch (error:any) {
-      setUploadError(error.message);
-    const validExtensions = ['.xlsx', '.xls', '.csv'];
-    const fileExtension = file.name.split('.').pop()?.toLowerCase();
-  
-    // Validações do arquivo
-    if (!fileExtension || !validExtensions.includes(`.${fileExtension}`)) {
-      setUploadError('Por favor, envie um arquivo .xlsx, .xls ou .csv');
-      return;
-    }
-  
-    if (file.size > 5 * 1024 * 1024) {
-      setUploadError('O arquivo é muito grande (máximo 5MB)');
-      return;
-    }
-  
-    setIsUploading(true);
-    setUploadError(null);
-  
-    try {
-      await uploadStudentSpreadsheet(file);
-      setUploadSuccess(true);
-      
-      // Atualize a lista de alunos se necessário
-      setTimeout(() => {
-        setIsModalOpen(false);
-        setUploadSuccess(false);
-      }, 2000);
-      
+      await uploadStudentSpreadsheet(file)
+      setUploadSuccess(true)
+      const updatedStudents = await fetchStudents()
+      setStudents(updatedStudents)
+      setTimeout(() => setIsModalOpen(false), 2000)
     } catch (error: any) {
-      setUploadError(error.message || 'Erro ao enviar planilha');
+      setUploadError(error.message || 'Erro ao enviar planilha')
     } finally {
-      setIsUploading(false);
+      setIsUploading(false)
     }
-  };
-
-
+  }
 
   const handleDownloadTemplate = async () => {
-    setIsDownloading(true);
+    setIsDownloading(true)
     try {
-      await downloadSpreadsheetTemplate();
+      await downloadSpreadsheetTemplate()
     } catch (error) {
-      console.error('Erro ao baixar modelo:', error);
-      alert('Erro ao baixar modelo');
+      console.error('Erro ao baixar modelo:', error)
+      alert('Erro ao baixar modelo')
     } finally {
-      setIsDownloading(false);
+      setIsDownloading(false)
     }
-  };
+  }
 
 
 
