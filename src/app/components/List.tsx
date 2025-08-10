@@ -341,7 +341,7 @@ export function List<T extends { id: number | string }>({
         {isDownloading ? 'Gerando arquivo...' : 'Importar planilha'}
       </DataContainer>
 
-      <DataContainer>
+      <DataContainer onClick={() => setIsModalOpen(true)}>
         <FiPlus size={24} style={{ marginRight: '10px' }} />
         Adicionar Aluno
       </DataContainer>

@@ -30,7 +30,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'lightblue' ,marginTop: '60px', backgroundImage: `linear-gradient(rgba(0, 60, 120, 0.7), rgba(, 0, 160, 0.7))`
+    <div style={{ display: 'flex', minHeight: 'calc(100vh - 60px)', background: 'lightblue' ,marginTop: '60px', backgroundImage: `linear-gradient(rgba(0, 60, 120, 0.7), rgba(, 0, 160, 0.7))`
  }}>
       <Navbar />
       <SidebarComponent />
@@ -40,7 +40,7 @@ export default function Home() {
       flex: 1, 
         marginLeft: '242px', // Ajuste conforme a largura da sua sidebar
         padding: '20px',
-
+        
        minHeight: '100vh',
        backgroundSize: 'cover',
        backgroundRepeat: 'no-repeat',

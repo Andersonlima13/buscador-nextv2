@@ -31,10 +31,10 @@ export default function Sidebar_component() {
     <div style={{
       marginTop: '60px',
       width: '250px',
-      height: '100vh',
+      height: 'calc(100vh - 60px)',
       background: '#fffff',
       position: 'fixed', // Alterado para fixed
-      top: 0, // Fixa no topo
+      top: '60px', // Fixa no topo
       left: 0, // Fixa na esquerda
       margin: 0,
       padding: 0,
@@ -111,26 +111,7 @@ export default function Sidebar_component() {
 
 </SubMenu>
   
-        <SubMenu label="Usuários">
-        
- 
-  
-  <MenuItem>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      width: '100%',
-      paddingRight: '10px'
-    }}>
-      <Link href="/users" passHref>
-        <StyledLinkText>Gerenciar Usuários</StyledLinkText>
-      </Link>
-      <FiSettings  style={{ marginLeft: 'auto' }} />
-    </div>
-  </MenuItem>
-        </SubMenu>
-
+       
        
   <MenuItem>
   <div style={{
