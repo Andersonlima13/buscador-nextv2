@@ -22,7 +22,8 @@ const NavContainer = styled.nav`
   left: 0;
   width: 100%;
   height: 60px;
-  background: #1e0f26;
+  background:rgb(0, 60, 120);
+  opacity: 0.8;
   display: flex;
   align-items: center;
   padding: 0 20px;

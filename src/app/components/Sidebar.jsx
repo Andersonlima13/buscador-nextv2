@@ -29,6 +29,7 @@ const StyledLinkText = styled.a`
 export default function Sidebar_component() {
   return (
     <div style={{
+      marginTop: '60px',
       width: '250px',
       height: '100vh',
       background: '#fffff',
@@ -90,7 +91,6 @@ export default function Sidebar_component() {
             }),
           }}
         >
-        <MenuItem>Colégio Vila</MenuItem>
   
         <SubMenu label="Buscador De Login">
   <MenuItem>
