@@ -45,9 +45,9 @@ const StudentNameLink = styled.div` // Mudamos de 'a' para 'div'
 `;
 // Componentes estilizados
 const TableWrapper = styled.div`
-background-color:#1e0f26;
+background-color:#003c78;
 border-radius: 8px;
-  box-shadow: 0 0 1px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 0 1px rgba(0, 60, 120, 0.1), 0 2px 6px rgba(61, 174, 0, 0.05);
   padding: 24px;
   font-family: 'Source Sans Pro', sans-serif;
 `
@@ -102,7 +102,7 @@ const SearchIcon = styled.span`
 `
 
 const Table = styled.table`
-  background-color:#1e0f26;
+  background-color:#003c78;
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 16px;
@@ -110,7 +110,7 @@ const Table = styled.table`
 
 const TableHead = styled.thead`
 color:white;
-background-color:black ;
+background-color:#0050a0 ;
 
 `
 
@@ -125,7 +125,7 @@ const Th = styled.th`
 `
 
 const Td = styled.td`
-text-shadow: 1px 1px 1px #374151;
+text-shadow: 1px 1px 1pxrgb(34, 76, 143);
   padding: 12px 16px;
   font-size: 14px;
   color: white;
@@ -160,11 +160,11 @@ const PaginationButton = styled.button<{ active?: boolean; disabled?: boolean }>
   cursor: pointer;
   transition: all 0.2s;
   border: 1px solid #ddd;
-  background-color: ${({ active }) => active ? '#3c8dbc' : '#fff'};
+  background-color: ${({ active }) => active ? '#003c78' : '#fff'};
   color: ${({ active }) => active ? '#fff' : '#444'};
 
   &:hover:not(:disabled) {
-    background-color: ${({ active }) => active ? '#367fa9' : '#f4f4f4'};
+    background-color: ${({ active }) => active ? '#003c78' : '#fff'};
   }
 
   &:disabled {
@@ -181,22 +181,23 @@ const DataContainer = styled.div`
   text-align: center;
   backdrop-filter: blur(10px); /* Efeito vidro fosco */
   border: 1px solid rgba(255, 255, 255, 0.25); /* Borda branca suave */
-  color: white;
+  color: #ffff;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra escura para profundidade */
+  box-shadow: 0 4px 8px rgba(0, 60, 120, 0.2); /* Sombra escura para profundidade */
 
   /* Hover */
   &:hover {
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
     transform: translateY(-3px);
-    background-color: rgba(128, 0, 128, 0.25); /* Intensifica o roxo translúcido */
+    background-color: rgba(255, 255, 255, 0.1); /* Intensifica o roxo translúcido */
   }
 `;
 
 const FileInputContainer = styled.label`
+  color:black;
   display: inline-block;
   cursor: pointer;
   
@@ -208,9 +209,10 @@ const FileInputContainer = styled.label`
 
 // Componente que usa o estilo
 const FileUploadButton = styled(DataContainer)`
+  color : black;
   /* Pode adicionar estilos específicos se necessário */
   &:hover {
-    background-color: #e0e0e0;
+    background-color:rgb(0, 80, 160);
   }
 `;
 
@@ -363,8 +365,12 @@ export function List<T extends { id: number | string }>({
 
 <Modalcontent>
   <DataContainer onClick={handleDownloadTemplate}>
+    <FileUploadButton>
+
     <FiDownload size={20} style={{ marginRight: '10px' }} />
     {isDownloading ? 'Gerando arquivo...' : 'Modelo De Planilha'}
+    </FileUploadButton>
+
   </DataContainer>
 
   {uploadSuccess ? (
@@ -401,9 +407,12 @@ export function List<T extends { id: number | string }>({
           pointerEvents: !selectedFile ? 'none' : 'auto',
           marginTop: '10px'
         }}
-      >
+      ><FileUploadButton>
+
         <FiSend size={20} style={{ marginRight: '10px' }} />
         Enviar Planilha
+        </FileUploadButton>
+
       </DataContainer>
     </>
   )}
