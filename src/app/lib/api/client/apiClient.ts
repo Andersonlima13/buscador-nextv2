@@ -39,10 +39,26 @@ apiClient.interceptors.request.use(
 );
 
 // Interceptor de Response com tipagem correta
+
+
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Interceptor de resposta
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => response,
-  (error: AxiosError) => {
+  (response) => response,
+  (error) => {
     if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       if (typeof window !== 'undefined') {
         window.location.href = '/login';
       }

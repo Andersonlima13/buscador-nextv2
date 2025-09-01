@@ -1,6 +1,13 @@
 'use client';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useRouter } from "next/navigation";
+import {login} from "../lib/api/services/authService";
+import { useState } from 'react';
+
+
+
+
 
 const Container = styled.div`
   height: 100vh;
@@ -73,26 +80,76 @@ const Footer = styled.div`
 `;
 
 export default function Login() {
-  return (
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      await login(email, password);
+      router.push("/home"); // redireciona após login
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Erro ao autenticar");
+    }
+  };
+
+
+
+
+
+ return (
     <Container>
-      <Form method="post">
-      <h2 className="d-flex justify-content-center text-light">Login</h2>
+      <Form onSubmit={handleSubmit}>
+        <h2 className="d-flex justify-content-center text-light">Login</h2>
+
         <Illustration>
           <i className="icon ion-ios-locked-outline"></i>
         </Illustration>
+
+        {error && <p className="text-danger text-center">{error}</p>}
+
         <div className="form-group">
-          <Input type="email" name="email" placeholder="Email" required />
+          <Input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            value={email}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+          />
         </div>
+
         <div className="form-group">
-          <Input type="password" name="password" placeholder="Senha" required />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Senha"
+            required
+            value={password}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+          />
         </div>
+
         <div className="form-group">
-          <Button className='text-light' type="submit">Log In</Button>
+          <Button className="text-light" type="submit">
+            Log In
+          </Button>
         </div>
-        <Footer className='text-light'>
+
+        <Footer className="text-light">
           Direitos Reservados, <b>Colégio Vila</b>
         </Footer>
       </Form>
+
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"

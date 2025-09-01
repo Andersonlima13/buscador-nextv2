@@ -24,7 +24,7 @@ export const fetchStudents = async (): Promise<Student[]> => {
 /// funcao para busca indiviudal de um aluno , deve fazer o fetch dos dados do card
 // src/app/lib/api/services/studentService.ts
 export const fetchStudentByMatricula = async (matricula: string): Promise<Student> => {
-  const response = await apiClient.get(`/alunos?matricula=${matricula}`);
+  const response = await apiClient.get(`users/alunos?matricula=${matricula}`);
   
   // Encontre o aluno no array retornado
   const aluno = response.data.find((a: { matricula: string }) => a.matricula === matricula);
@@ -43,7 +43,7 @@ export const fetchStudentByMatricula = async (matricula: string): Promise<Studen
 
 export const handleDownloadStudents = async () => {
   try {
-    const response = await apiClient.get('/alunos');   // faz o get dos dados em /alunos e transforma em csv
+    const response = await apiClient.get('users/alunos');   // faz o get dos dados em /alunos e transforma em csv
     const data = response.data;
 
     // Converter JSON para CSV
