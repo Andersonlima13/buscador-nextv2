@@ -11,7 +11,7 @@ import { Student, CreateStudentDto } from '../../types/student'
 // faz um fetch , espera uma promessa dos dados do back-end, esses dados vem da interface  <Student[]>
 export const fetchStudents = async (): Promise<Student[]> => {
   try {
-    const response = await apiClient.get('/alunos')  /// resposta é um get nessa rota 
+    const response = await apiClient.get('/users/alunos')  /// resposta é um get nessa rota 
     return response.data.map((aluno: { matricula: string }) => ({  // retorno deve ser um mapeamento dos dados, deixamos explicito
       id: aluno.matricula,                                          // que vamos tratar matricula como id
       ...aluno}))  
