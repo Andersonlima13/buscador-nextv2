@@ -11,6 +11,10 @@ import { handleDownloadStudents,fetchStudents,uploadStudentSpreadsheet,downloadS
 import Link from 'next/link'
 import Modal from './Modal'
 import { Student } from '../lib/types/student'
+import ModalContent from './ModalContent'
+import AddStudentModalContent from "./AddStudentModalContent"
+import ExportStudentsModalContent from "./ExportStudentsModalContent"
+
 
 // Tipagem genérica
 type TableColumn<T> = {
@@ -216,12 +220,6 @@ const FileUploadButton = styled(DataContainer)`
   }
 `;
 
-const Modalcontent = styled.div`
-  justify-content:space-between;
-  display:flex;
-  align-items:center;
-`
-
 
 
 export function List<T extends { id: number | string }>({
@@ -235,7 +233,7 @@ export function List<T extends { id: number | string }>({
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [isDownloading, setIsDownloading] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalType, setModalType] = useState<"adicionarAluno" | "exportarAlunos" | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
@@ -298,7 +296,7 @@ export function List<T extends { id: number | string }>({
       setUploadSuccess(true)
       const updatedStudents = await fetchStudents()
       setStudents(updatedStudents)
-      setTimeout(() => setIsModalOpen(false), 2000)
+      setTimeout(() => setModalType(false), 2000)
     } catch (error: any) {
       setUploadError(error.message || 'Erro ao enviar planilha')
     } finally {
@@ -341,86 +339,62 @@ export function List<T extends { id: number | string }>({
         {isDownloading ? 'Gerando arquivo...' : 'Importar planilha'}
       </DataContainer>
 
-      <DataContainer onClick={() => setIsModalOpen(true)}>
-        <FiPlus size={24} style={{ marginRight: '10px' }} />
-        Adicionar Aluno
-      </DataContainer>
+      <DataContainer onClick={() => setModalType("adicionarAluno")}>
+  <FiPlus size={24} style={{ marginRight: '10px' }} />
+  Adicionar Aluno
+</DataContainer>
+
+   <DataContainer onClick={() => setModalType("exportarAlunos")}>
+  <FiUpload size={24} style={{ marginRight: '10px' }} />
+  Exportar Alunos
+</DataContainer>
       
-      <DataContainer onClick={() => setIsModalOpen(true)}>
-        
-        <FiUpload size={24} style={{ marginRight: '10px',}} />
-        Exportar alunos
-      </DataContainer>
-      
-      <Modal 
-      isOpen={isModalOpen}
+<Modal
+  isOpen={modalType !== null}
+  onClose={() => {
+    setModalType(null)
+    setSelectedFile(null)
+    setUploadSuccess(false)
+    setUploadError(null)
+  }}
+  title={
+    modalType === "adicionarAluno"
+      ? "Adicionar Aluno"
+      : modalType === "exportarAlunos"
+      ? "Exportar Alunos"
+      : ""
+  }
+>
+  {modalType === "adicionarAluno" && (
+    <AddStudentModalContent
       onClose={() => {
-      setIsModalOpen(false);
-      setSelectedFile(null);
-      setUploadSuccess(false);
-      setUploadError(null);
+        setModalType(null)
+        setSelectedFile(null)
+        setUploadSuccess(false)
+        setUploadError(null)
       }}
-      title="Upload de Planilha"
-      >
-
-<Modalcontent>
-  <DataContainer onClick={handleDownloadTemplate}>
-    <FileUploadButton>
-
-    <FiDownload size={20} style={{ marginRight: '10px' }} />
-    {isDownloading ? 'Gerando arquivo...' : 'Modelo De Planilha'}
-    </FileUploadButton>
-
-  </DataContainer>
-
-  {uploadSuccess ? (
-    <div style={{ color: 'green' }}>
-      ✅ Planilha enviada com sucesso!
-    </div>
-  ) : (
-    <>
-      <FileInputContainer>
-        <FileUploadButton>
-          <FiUpload size={20} style={{ marginRight: '8px' }} />
-          {selectedFile ? selectedFile.name : 'Escolher arquivo'}
-          <input
-            type="file"
-            accept=".csv, .xlsx, .xls"
-            onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-            style={{ display: 'none' }}
-          />
-        </FileUploadButton>
-      </FileInputContainer>
-
-      {uploadError && (
-        <div style={{ color: 'red', marginTop: '10px' }}>
-          ❌ {uploadError}
-        </div>
-      )}
-
-      <DataContainer 
-        onClick={() => selectedFile && handleUpload(selectedFile)}
-        aria-disabled={!selectedFile}
-        style={{
-          opacity: selectedFile ? 1 : 0.6,
-          cursor: selectedFile ? 'pointer' : 'not-allowed',
-          pointerEvents: !selectedFile ? 'none' : 'auto',
-          marginTop: '10px'
-        }}
-      ><FileUploadButton>
-
-        <FiSend size={20} style={{ marginRight: '10px' }} />
-        Enviar Planilha
-        </FileUploadButton>
-
-      </DataContainer>
-    </>
+      onSubmit={(data) => {
+        console.log("Aluno adicionado:", data)
+        // aqui você pode chamar a API para salvar no backend
+      }}
+    />
   )}
-</Modalcontent>
 
-
+  {modalType === "exportarAlunos" && (
+    <ExportStudentsModalContent
+      onClose={() => setModalType(null)}
+      onExport={(format) => {
+        console.log("Exportando em:", format)
+        // aqui você chama a função de export
+        if (format === "csv") {
+        //  handleExportCSV()
+        } else {
+        //  handleExportXLSX()
+        }
+      }}
+    />
+  )}
 </Modal>
-
  
         
         {searchable && (
