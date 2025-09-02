@@ -23,18 +23,22 @@ export const login = async (email: string, password: string) => {
 // LOGOUT
 export const logout = async () => {
   try {
-    await apiClient.post('/auth/logout');
+    await apiClient.post('/auth/logout', {}, { withCredentials: true });
   } catch (err) {
     console.error('Erro ao fazer logout:', err);
   } finally {
-    // Limpa localStorage independente do sucesso da requisição
-    localStorage.removeItem('token');
+    // Remove dados locais (mesmo que não tenha token)
     localStorage.removeItem('user');
+
+    // Redireciona para login
     if (typeof window !== 'undefined') {
       window.location.href = '/login';
     }
   }
 };
+
+
+
 
 // VERIFICAR SE USUÁRIO ESTÁ AUTENTICADO
 export const isAuthenticated = (): boolean => {
