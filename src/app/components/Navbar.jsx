@@ -1,4 +1,3 @@
-// components/Navbar.jsx
 "use client"
 import React from "react";
 import styled from "styled-components";
@@ -6,11 +5,15 @@ import Link from "next/link";
 import { LuLogOut } from "react-icons/lu";
 import { FaUser } from "react-icons/fa";
 import { FaHouseChimney } from "react-icons/fa6";
+import { logout } from "../lib/api/services/authService"; // importa logout
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledLinkText = styled.a`
   color: #ffff;
   text-decoration: none;
   font-weight: normal;
+  cursor: pointer;
   &:hover {
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
   }
@@ -39,12 +42,12 @@ const NavSection = styled.div`
 
 const LeftSection = styled(NavSection)`
   justify-content: flex-start;
-  width: 250px; /* Mesma largura do sidebar */
+  width: 250px;
 `;
 
 const RightSection = styled(NavSection)`
-  margin-left: auto; /* Mágica do alinhamento à direita */
-  padding-right: 50px; /* Espaço do canto direito */
+  margin-left: auto;
+  padding-right: 50px;
 `;
 
 const NavTitle = styled.div`
@@ -54,23 +57,32 @@ const NavTitle = styled.div`
 `;
 
 export default function Navbar() {
+  const handleLogout = () => {
+    toast.info("👋 O usuário deslogou");
+    setTimeout(() => logout(), 1500); // espera o toast antes de redirecionar
+  };
+
   return (
-    <NavContainer>
-      <LeftSection>
+    <>
+      <NavContainer>
+        <LeftSection>
+          <NavTitle>Colégio Vila</NavTitle>
+          <Link href="/home" passHref>
+            <StyledLinkText><FaHouseChimney/></StyledLinkText>
+          </Link>
+        </LeftSection>
         
-        <NavTitle>Colégio Vila   </NavTitle><StyledLinkText><FaHouseChimney/></StyledLinkText>
-      
-      </LeftSection>
-      
-      <RightSection>
-        <Link href="/profile" title="Perfil" passHref>
-          <StyledLinkText><FaUser/></StyledLinkText>
-        </Link>
-        <Link href="/login" title="Sair" passHref>
-        <StyledLinkText> <LuLogOut/></StyledLinkText>
-         
-        </Link>
-      </RightSection>
-    </NavContainer>
+        <RightSection>
+          <Link href="/profile" title="Perfil" passHref>
+            <StyledLinkText><FaUser/></StyledLinkText>
+          </Link>
+          <StyledLinkText title="Sair" onClick={handleLogout}>
+            <LuLogOut/>
+          </StyledLinkText>
+        </RightSection>
+      </NavContainer>
+
+      <ToastContainer position="top-center" autoClose={2000} />
+    </>
   );
 }

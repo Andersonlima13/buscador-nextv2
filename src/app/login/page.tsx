@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from "next/navigation";
 import {login} from "../lib/api/services/authService";
 import { useState } from 'react';
+import {ToastContainer, toast} from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -80,38 +82,29 @@ const Footer = styled.div`
 `;
 
 export default function Login() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const router = useRouter();
 
-    const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
-    try {
-      await login(email, password);
-      router.push("/home"); // redireciona após login
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Erro ao autenticar");
-    }
+ try {
+  await login(email, password);
+  toast.success("✅ Login bem-sucedido!");
+  setTimeout(() => router.push("/home"), 1000);
+} catch (err: any) {
+  toast.error(err.response?.data?.error || "❌ Erro ao fazer login");
+}
   };
 
-
-
-
-
- return (
+  return (
     <Container>
       <Form onSubmit={handleSubmit}>
         <h2 className="d-flex justify-content-center text-light">Login</h2>
-
         <Illustration>
           <i className="icon ion-ios-locked-outline"></i>
         </Illustration>
-
-        {error && <p className="text-danger text-center">{error}</p>}
 
         <div className="form-group">
           <Input
@@ -120,9 +113,7 @@ export default function Login() {
             placeholder="Email"
             required
             value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -133,9 +124,7 @@ export default function Login() {
             placeholder="Senha"
             required
             value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
@@ -150,10 +139,7 @@ export default function Login() {
         </Footer>
       </Form>
 
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"
-      />
+      <ToastContainer position="top-center" autoClose={2000} />
     </Container>
   );
 }

@@ -1,6 +1,4 @@
-
 // configuracao da api aqui
-
 import axios, {
   AxiosInstance,
   InternalAxiosRequestConfig,
@@ -12,24 +10,27 @@ import axios, {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3050';
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: API_URL, // api aqui
-  withCredentials: true, // Importante para CORS com credenciais
+  baseURL: API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   }
 });
 
-// Interceptor de Request com tipagem correta (debugar se foi para a api correta)
+// Interceptor de Request - Adiciona token no header
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const fullUrl = `${config.baseURL}${config.url}`;
     
     console.log('[AXIOS] Request para:', fullUrl);
-    console.log('Variáveis de ambiente:', {
-      API_URL: process.env.NEXT_PUBLIC_API_URL,
-      NODE_ENV: process.env.NODE_ENV
-    });
+    
+    // Adiciona token de autenticação se disponível
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
 
     return config;
   },
@@ -38,28 +39,15 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Interceptor de Response com tipagem correta
-
-
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Interceptor de resposta
+// Interceptor de Response - Trata erros de autenticação
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      // Remove tokens e redireciona para login
       if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         window.location.href = '/login';
       }
     }
