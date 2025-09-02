@@ -12,6 +12,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3050';
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_URL,
   timeout: 10000,
+  withCredentials: true,  // <-- chave para mandar cookie httpOnly
   headers: {
     'Content-Type': 'application/json',
   }
