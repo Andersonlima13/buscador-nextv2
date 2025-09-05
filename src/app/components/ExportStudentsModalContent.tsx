@@ -1,3 +1,11 @@
+import {
+  FormContainer,
+  Title,
+  ButtonRow,
+  CancelButton,
+  SaveButton
+} from "./modalstyle/ModalStyles";
+
 interface ExportStudentsModalContentProps {
   onClose: () => void
   onExport: (format: "csv" | "xlsx") => void
@@ -8,35 +16,24 @@ export default function ExportStudentsModalContent({
   onExport,
 }: ExportStudentsModalContentProps) {
   return (
-    <div className="p-4 space-y-4">
-      <h2 className="text-lg font-semibold">Exportar Alunos</h2>
-      <p className="text-sm text-gray-600">
+    <FormContainer>
+      <Title>Exportar Alunos</Title>
+      <p style={{ fontSize: "0.95rem", color: "#666", marginBottom: 12 }}>
         Selecione o formato para exportar a lista de alunos.
       </p>
-
-      <div className="flex gap-3">
-        <button
-          onClick={() => onExport("csv")}
-          className="px-3 py-1 rounded bg-green-600 text-white"
-        >
+      <ButtonRow>
+        <SaveButton onClick={() => onExport("csv")} style={{ background: "#16a34a" }}>
           Exportar CSV
-        </button>
-        <button
-          onClick={() => onExport("xlsx")}
-          className="px-3 py-1 rounded bg-indigo-600 text-white"
-        >
+        </SaveButton>
+        <SaveButton onClick={() => onExport("xlsx")} style={{ background: "#4338ca" }}>
           Exportar XLSX
-        </button>
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={onClose}
-          className="px-3 py-1 rounded border"
-        >
+        </SaveButton>
+      </ButtonRow>
+      <ButtonRow>
+        <CancelButton type="button" onClick={onClose}>
           Fechar
-        </button>
-      </div>
-    </div>
-  )
+        </CancelButton>
+      </ButtonRow>
+    </FormContainer>
+  );
 }

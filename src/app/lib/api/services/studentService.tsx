@@ -160,17 +160,14 @@ export const downloadSpreadsheetTemplate = async (): Promise<void> => {
 
 
 
-
-
-
-
-
-
-
-
 export const createStudent = async (data: CreateStudentDto): Promise<Student> => {
-  const response = await apiClient.post('/aluno', data)
-  return response.data
+  try {
+    const response = await apiClient.post('/users/alunos/create', data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao criar aluno:', error);
+    throw new Error('Falha ao criar aluno');
+  }
 }
 
 export const updateStudent = async (id: string, data: Partial<Student>) => {

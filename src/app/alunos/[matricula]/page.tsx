@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Student } from '@/app/lib/types/student';
 import styled from 'styled-components';
-import { FiExternalLink } from 'react-icons/fi';
-
+import { FiExternalLink, FiDownload, FiEdit, FiTrash2 } from 'react-icons/fi';
+import Sidebar from "@/app/components/Sidebar";
+import Navbar from "@/app/components/Navbar";
 
 const AccessLink = styled.a`
   display: inline-flex;
@@ -29,36 +30,44 @@ const AccessLink = styled.a`
 `;
 
 const Container = styled.div`
-background:rgb(237, 227, 227);  
+  background: rgb(237, 227, 227);  
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  padding: 20px;
+`;
+
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1000px;
+  gap: 20px;
+`;
+
+const MainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 `;
 
 const Card = styled.div`
-  width: 600px;
-  margin: 20px;
-  padding: 10px;
+  flex: 1;
+  padding: 20px;
   border-radius: 20px;
-  background: linear-gradient(90deg,rgba(76, 160, 194, 1) 0%, rgba(132, 219, 168, 1) 50%);
-  box-shadow: 10px 10px 20px #ebebeb, -10px -10px 20px #ffffff;
-  transition: transform 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 `;
 
 const ProfilePic = styled.img`
-  width: 40%;
-  max-width: 150px;
-  height: auto;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
+  display: block;
+  border: 3px solid #ccc;
 `;
 
 const Info = styled.div`
@@ -74,8 +83,6 @@ const Info = styled.div`
     }
   }
 `;
-
-
 
 const InfoSection = styled.div<{ title?: string }>`
   position: relative;
@@ -99,21 +106,11 @@ const InfoSection = styled.div<{ title?: string }>`
   }
 `;
 
-
-
-
 const SectionHeader = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
 `;
-
-const InfoItem = ({ label, value }: { label: string; value: string }) => (
-  <InfoItemContainer>
-    <Label>{label}:</Label>
-    <Value>{value}</Value>
-  </InfoItemContainer>
-);
 
 const InfoItemContainer = styled.div`
   display: flex;
@@ -132,17 +129,53 @@ const Value = styled.span`
   color: #333;
   word-break: break-word;
   flex-grow: 1;
+`;
 
-`
+const ActionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 200px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+`;
 
+const Actions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  justify-content: flex-start;
+`;
 
+const ActionButton = styled.button`
+  border: 2px solid #000;
+  background: transparent;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
+  &:hover {
+    background: #f3f3f3;
+  }
+`;
 
-
-
-
-
-
+const InfoItem = ({ label, value }: { label: string; value: string }) => (
+  <InfoItemContainer>
+    <Label>{label}:</Label>
+    <Value>{value}</Value>
+  </InfoItemContainer>
+);
 
 export default function AlunoDetalhes({ params }: { params: { matricula: string } }) {
   const [aluno, setAluno] = useState<Student | null>(null);
@@ -186,152 +219,145 @@ export default function AlunoDetalhes({ params }: { params: { matricula: string 
 
   if (loading) {
     return (
-      <div className="p-4 text-center">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mb-2"></div>
-        <p>Carregando dados do aluno...</p>
-      </div>
+      <>
+        <Navbar />
+        <div style={{ display: 'flex' }}>
+          <Sidebar />
+          <div style={{ flex: 1 }}>
+            <div className="p-4 text-center">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mb-2"></div>
+              <p>Carregando dados do aluno...</p>
+            </div>
+          </div>
+        </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="p-4 max-w-4xl mx-auto">
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-          <h2 className="font-bold">404 - Aluno não encontrado</h2>
-          <p className="mt-1">{error}</p>
-          <button 
-            onClick={() => router.push('/home')}
-            className="mt-3 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-          >
-            Voltar para lista
-          </button>
+      <>
+        <Navbar />
+        <div style={{ display: 'flex' }}>
+          <Sidebar />
+          <div style={{ flex: 1 }}>
+            <div className="p-4 max-w-4xl mx-auto">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                <h2 className="font-bold">404 - Aluno não encontrado</h2>
+                <p className="mt-1">{error}</p>
+                <button 
+                  onClick={() => router.push('/home')}
+                  className="mt-3 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                >
+                  Voltar para lista
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
-  // Garantia que aluno não é null antes de renderizar
   if (!aluno) {
-    return null; // Ou algum fallback UI
+    return null;
   }
 
   return (
+    <>
+      <Navbar />
+      <div style={{ display: 'flex' }}>
+        <Sidebar />
+        <div style={{ flex: 1 }}>
+          <Container>
+            <PageWrapper>
+              <MainContent>
+                {/* CARD PRINCIPAL */}
+                <Card>
+                  <ProfilePic src="https://cdn-icons-png.flaticon.com/512/4196/4196591.png" alt="Profile" />
 
+                  <Info>
+                    <InfoSection>
+                      {aluno.nome && <InfoItem label="NOME" value={aluno.nome} />}
+                      {aluno.serie && <InfoItem label="SÉRIE" value={aluno.serie} />}
+                      {aluno.unidade && <InfoItem label="UNIDADE" value={aluno.unidade} />}
+                    </InfoSection>
 
-    <Container>
-  <Card>
-  <ProfilePic src="https://cdn-icons-png.flaticon.com/512/4196/4196591.png" alt="Profile" />
-  
-  <Info>
-    {/* Seção Principal */}
-    <InfoSection>
-      <SectionHeader>
-  
-      </SectionHeader>
-      {aluno.nome && <InfoItem label="NOME" value={aluno.nome} />}
-      {aluno.serie && <InfoItem label="SÉRIE" value={aluno.serie} />}
-      {aluno.unidade && <InfoItem label="UNIDADE" value={aluno.unidade} />}
-    </InfoSection>
+                    {/* E-mail */}
+                    <InfoSection>
+                      <SectionHeader>
+                        <span>E-MAIL</span>
+                        <AccessLink href={aluno.email ? `mailto:${aluno.email}` : '#'}>
+                          <FiExternalLink /> ACESSE AQUI
+                        </AccessLink>
+                      </SectionHeader>
+                      {aluno.email && <InfoItem label="E-MAIL" value={aluno.email} />}
+                      {aluno.senha_email && <InfoItem label="SENHA" value={aluno.senha_email} />}
+                    </InfoSection>
 
-    {/* E-mail */}
-    <InfoSection>
-      <SectionHeader>
-        <span>E-MAIL</span>
-        <AccessLink href={aluno.email ? `mailto:${aluno.email}` : '#'}>
-          <FiExternalLink /> ACESSE AQUI
-        </AccessLink>
-      </SectionHeader>
-      {aluno.email && <InfoItem label="E-MAIL" value={aluno.email} />}
-      {aluno.senha_email && <InfoItem label="SENHA" value="••••••••" />}
-    </InfoSection>
+                    {/* SFB */}
+                    <InfoSection>
+                      <SectionHeader>
+                        <span>SFB</span>
+                        <AccessLink href="#" onClick={() => window.open('https://www.sfb.com.br', '_blank')}>
+                          <FiExternalLink /> ACESSE AQUI
+                        </AccessLink>
+                      </SectionHeader>
+                      {aluno.sfb && <InfoItem label="USUÁRIO" value={aluno.sfb} />}
+                      {aluno.senha_sfb && <InfoItem label="SENHA" value={aluno.senha_sfb} />}
+                    </InfoSection>
 
-    {/* SFB */}
-    <InfoSection>
-      <SectionHeader>
-        <span>SFB</span>
-        <AccessLink href="#" onClick={() => window.open('https://www.sfb.com.br', '_blank')}>
-          <FiExternalLink /> ACESSE AQUI
-        </AccessLink>
-      </SectionHeader>
-      {aluno.sfb && <InfoItem label="USUÁRIO" value={aluno.sfb} />}
-      {aluno.senha_sfb && <InfoItem label="SENHA" value="••••••••" />}
-    </InfoSection>
+                    {/* RICHMOND */}
+                    <InfoSection>
+                      <SectionHeader>
+                        <span>RICHMOND</span>
+                        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
+                          <FiExternalLink /> ACESSE AQUI
+                        </AccessLink>
+                      </SectionHeader>
+                      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
+                      {aluno.senha_r && <InfoItem label="SENHA" value={aluno.senha_r} />}
+                    </InfoSection>
 
-    {/* Adicione as outras seções seguindo o mesmo padrão */}
-    <InfoSection>
-      <SectionHeader>
-        <span>RICHMOND</span>
-        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
-          <FiExternalLink /> ACESSE AQUI
-        </AccessLink>
-      </SectionHeader>
-      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
-      {aluno.senha_r && <InfoItem label="SENHA" value="••••••••" />}
-    </InfoSection>
+                    {/* ARVORE */}
+                    <InfoSection>
+                      <SectionHeader>
+                        <span>ARVORE</span>
+                        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
+                          <FiExternalLink /> ACESSE AQUI
+                        </AccessLink>
+                      </SectionHeader>
+                      {aluno.arvore_senha && <InfoItem label="USUÁRIO" value={aluno.arvore_senha} />}
+                    </InfoSection>
 
+                    {/* EVOLUCIONAL */}
+                    <InfoSection>
+                      <SectionHeader>
+                        <span>EVOLUCIONAL</span>
+                        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
+                          <FiExternalLink /> ACESSE AQUI
+                        </AccessLink>
+                      </SectionHeader>
+                      {aluno.evolucional && <InfoItem label="USUÁRIO" value={aluno.evolucional} />}
+                      {aluno.senha_evo && <InfoItem label="SENHA" value={aluno.senha_evo} />}
+                    </InfoSection>
+                  </Info>
+                </Card>
+              </MainContent>
 
-    <InfoSection>
-      <SectionHeader>
-        <span>ARVORE</span>
-        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
-          <FiExternalLink /> ACESSE AQUI
-        </AccessLink>
-      </SectionHeader>
-      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
-      {aluno.senha_r && <InfoItem label="SENHA" value="••••••••" />}
-    </InfoSection>
-
-    <InfoSection>
-      <SectionHeader>
-        <span>EVOLUCIONAL</span>
-        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
-          <FiExternalLink /> ACESSE AQUI
-        </AccessLink>
-      </SectionHeader>
-      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
-      {aluno.senha_r && <InfoItem label="SENHA" value="••••••••" />}
-    </InfoSection>
-
-    <InfoSection>
-      <SectionHeader>
-        <span>MEDALHEI</span>
-        <AccessLink href="#" onClick={() => window.open('https://www.richmond.com.br', '_blank')}>
-          <FiExternalLink /> ACESSE AQUI
-        </AccessLink>
-      </SectionHeader>
-      {aluno.richmond && <InfoItem label="USUÁRIO" value={aluno.richmond} />}
-      {aluno.senha_r && <InfoItem label="SENHA" value="••••••••" />}
-    </InfoSection>
-
-    
-    
-
-
-
-
-
-
-  </Info>
-</Card>
-
-
-  </Container>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-)}
+              {/* COLUNA DE BOTÕES */}
+              <ActionsContainer>
+                <ActionButton onClick={() => router.push('/home')}>
+                  Voltar
+                </ActionButton>
+                <ActionButton><FiDownload /> Download Card</ActionButton>
+                <ActionButton><FiEdit /> Editar Card</ActionButton>
+                <ActionButton><FiTrash2 /> Excluir Card</ActionButton>
+              </ActionsContainer>
+            </PageWrapper>
+          </Container>
+        </div>
+      </div>
+    </>
+  );
+}
