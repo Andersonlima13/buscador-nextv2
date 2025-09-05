@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Student } from '@/app/lib/types/student';
 import styled from 'styled-components';
-import { FiExternalLink, FiDownload, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiExternalLink, FiDownload, FiEdit, FiTrash2, FiMenu, FiX } from 'react-icons/fi';
 import Sidebar from "@/app/components/Sidebar";
 import Navbar from "@/app/components/Navbar";
 
@@ -38,7 +38,7 @@ const Container = styled.div`
 
 const PageWrapper = styled.div`
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
@@ -134,28 +134,56 @@ const Value = styled.span`
 const ActionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
-  min-width: 200px;
-  padding: 20px;
+  width: fit-content;
+  min-width: 60px;
+  padding: 10px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: relative;
 `;
 
-const Actions = styled.div`
+const MainActionButton = styled.button`
+  border: 2px solid #000;
+  background: transparent;
+  padding: 8px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+
+  &:hover {
+    background: #f3f3f3;
+  }
+`;
+
+const ActionsMenu = styled.div<{ isOpen: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  align-items: flex-start;
+  gap: 10px;
+  align-items: center;
   justify-content: flex-start;
+  width: ${props => props.isOpen ? '200px' : '0'};
+  margin-top: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  max-height: ${props => props.isOpen ? '300px' : '0'};
+  opacity: ${props => props.isOpen ? '1' : '0'};
+  transform: ${props => props.isOpen ? 'translateY(0)' : 'translateY(-10px)'};
 `;
 
 const ActionButton = styled.button`
   border: 2px solid #000;
   background: transparent;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: bold;
@@ -164,6 +192,8 @@ const ActionButton = styled.button`
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
+  justify-content: center;
 
   &:hover {
     background: #f3f3f3;
@@ -181,6 +211,7 @@ export default function AlunoDetalhes({ params }: { params: { matricula: string 
   const [aluno, setAluno] = useState<Student | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -347,12 +378,18 @@ export default function AlunoDetalhes({ params }: { params: { matricula: string 
 
               {/* COLUNA DE BOTÕES */}
               <ActionsContainer>
-                <ActionButton onClick={() => router.push('/home')}>
-                  Voltar
-                </ActionButton>
-                <ActionButton><FiDownload /> Download Card</ActionButton>
-                <ActionButton><FiEdit /> Editar Card</ActionButton>
-                <ActionButton><FiTrash2 /> Excluir Card</ActionButton>
+                <MainActionButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                  {isMenuOpen ? <FiX /> : <FiMenu />}
+                </MainActionButton>
+                
+                <ActionsMenu isOpen={isMenuOpen}>
+                  <ActionButton onClick={() => router.push('/home')}>
+                    Voltar
+                  </ActionButton>
+                  <ActionButton><FiDownload /> Download Card</ActionButton>
+                  <ActionButton><FiEdit /> Editar Card</ActionButton>
+                  <ActionButton><FiTrash2 /> Excluir Card</ActionButton>
+                </ActionsMenu>
               </ActionsContainer>
             </PageWrapper>
           </Container>
